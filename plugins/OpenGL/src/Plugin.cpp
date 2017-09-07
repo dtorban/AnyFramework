@@ -12,8 +12,8 @@
 extern "C"
 {
 	PLUGIN_API PluginFW::Plugin* loadFWPlugin() {
-		IVGFX::IVPlugin* plugin = new IVGFX::IVPlugin();
-		plugin->addFactory(new IVGFX::SimpleItemFactory<IVGFX::OpenGLInterface*>("OpenGLInterface"));
+		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
+		plugin->addFactory(new any_fw::SimpleItemFactory<any_fw::OpenGLInterface*>("OpenGLInterface"));
 		return plugin;
 	}
 }

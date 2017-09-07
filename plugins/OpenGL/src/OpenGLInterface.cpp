@@ -9,7 +9,7 @@
 #include "OpenGLInterface.h"
 #include "OpenGLHeaders.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 OpenGLInterface::OpenGLInterface(const any::AnyItem& anyItem) : Object("OpenGLInterface") {
 	initMethods();
@@ -72,4 +72,4 @@ void OpenGLInterface::addMethod(Object::Method* method) {
 	methods[method->getName()] = method;
 }
 
-} /* namespace IVGFX */
+} /* namespace any_fw */

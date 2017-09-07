@@ -5,7 +5,7 @@
 #include "object/Object.h"
 
 using namespace any;
-using namespace IVGFX;
+using namespace any_fw;
 
 int main(int argc, char**argv) {
 	IVPluginManager pm;

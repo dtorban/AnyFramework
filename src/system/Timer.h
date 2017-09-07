@@ -11,7 +11,7 @@
 
 #include "System.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class Timer {
 public:
@@ -33,26 +33,26 @@ private:
 	double totalTime;
 };
 
-inline IVGFX::Timer::Timer() {
+inline any_fw::Timer::Timer() {
 	reset();
 }
 
-inline void IVGFX::Timer::start() {
+inline void any_fw::Timer::start() {
 	startTime = System::getTime();
 }
 
-inline void IVGFX::Timer::stop() {
+inline void any_fw::Timer::stop() {
 	double stopTime = System::getTime();
 	lastDuration = stopTime - startTime;
 	totalTime += lastDuration;
 	numIterations++;
 }
 
-inline double IVGFX::Timer::getLastDuration() const {
+inline double any_fw::Timer::getLastDuration() const {
 	return lastDuration;
 }
 
-inline double IVGFX::Timer::getAverageDuration() const {
+inline double any_fw::Timer::getAverageDuration() const {
 	return totalTime / (1.0*numIterations);
 }
 
@@ -71,7 +71,7 @@ inline long Timer::getNumIterations() const {
 	return numIterations;
 }
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 
 

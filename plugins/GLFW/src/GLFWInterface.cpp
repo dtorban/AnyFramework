@@ -10,7 +10,7 @@
 #include <GLFW/glfw3.h>
 #include "GLFWWindow.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 static void error_callback(int error, const char* description) {
 	std::cout << "Error: " << description << std::endl;
@@ -56,4 +56,4 @@ GLFWInterface::~GLFWInterface() {
 
 
 
-} /* namespace IVGFX */
+} /* namespace any_fw */

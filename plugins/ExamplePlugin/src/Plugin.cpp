@@ -11,9 +11,9 @@
 #include "AnyItem/impl/ReferenceCountedItem.h"
 
 using namespace any;
-using namespace IVGFX;
+using namespace any_fw;
 
-class WidgetFactory : public IVGFX::AnyItemFactory {
+class WidgetFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 		if (query["Type"].asType<std::string>() == "Widget") {
@@ -31,7 +31,7 @@ public:
 	}
 };
 
-class GizmoFactory : public IVGFX::AnyItemFactory {
+class GizmoFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 		if (query["Type"].asType<std::string>() == "Gizmo") {
@@ -42,7 +42,7 @@ public:
 	}
 };
 
-class ThingFactory : public IVGFX::AnyItemFactory {
+class ThingFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 		if (query["Type"].asType<std::string>() == "Thing") {
@@ -101,7 +101,7 @@ public:
 	}
 };
 
-class TestObjectFactory : public IVGFX::AnyItemFactory {
+class TestObjectFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 		if (query["Type"].asType<std::string>() == "TestObject") {
@@ -116,7 +116,7 @@ public:
 extern "C"
 {
 	PLUGIN_API PluginFW::Plugin* loadFWPlugin() {
-		IVGFX::IVPlugin* plugin = new IVGFX::IVPlugin();
+		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
 		plugin->addFactory(new WidgetFactory());
 		plugin->addFactory(new GizmoFactory());
 		plugin->addFactory(new ThingFactory());

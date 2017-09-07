@@ -16,7 +16,7 @@
 #include <map>
 #include <set>
 
-namespace IVGFX {
+namespace any_fw {
 
 class Object {
 	friend class Method;
@@ -107,6 +107,6 @@ inline std::ostream& operator<<(std::ostream& out, const Object::Method& method)
 	return out;
 }
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 #endif /* OBJECT_H_ */

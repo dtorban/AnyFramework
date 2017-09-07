@@ -12,7 +12,7 @@ float getElapsedSeconds() {
 }
 #endif
 
-namespace IVGFX {
+namespace any_fw {
 
 	// Adapted from G3D (https://sourceforge.net/p/g3d/code/HEAD/tree/G3D10/G3D.lib/source/System.cpp#l915)
 	void System::initTime() {

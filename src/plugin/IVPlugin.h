@@ -13,7 +13,7 @@
 #include "PluginVersion.h"
 #include "factory/AnyItemFactory.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class IVPlugin : public PluginFW::CompositePlugin {
 public:
@@ -49,9 +49,9 @@ private:
 };
 
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
-inline void IVGFX::IVPlugin::initialize(const PluginFW::PluginInfo& info) {
+inline void any_fw::IVPlugin::initialize(const PluginFW::PluginInfo& info) {
 	addPlugin(new AnyFactoryPlugin(factories));
 	this->info = info;
 	PluginFW::CompositePlugin::initialize(info);

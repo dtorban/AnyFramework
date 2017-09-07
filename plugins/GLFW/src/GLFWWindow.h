@@ -18,7 +18,7 @@ template<>
 struct item_delete<GLFWwindow*> { static void destroy(GLFWwindow* item) {  } };
 }
 
-namespace IVGFX {
+namespace any_fw {
 
 class GLFWWindow : public Object {
 public:
@@ -34,6 +34,6 @@ private:
 	GLFWwindow* window;
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 #endif /* GLFWWINDOW_H_ */

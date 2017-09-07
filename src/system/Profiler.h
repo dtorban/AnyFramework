@@ -13,7 +13,7 @@
 #include <string>
 #include <map>
 
-namespace IVGFX {
+namespace any_fw {
 
 class Profiler {
 public:
@@ -28,18 +28,18 @@ private:
 	std::map<std::string, Timer*> timers;
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
-inline IVGFX::Profiler::Profiler() {
+inline any_fw::Profiler::Profiler() {
 }
 
-inline IVGFX::Profiler::~Profiler() {
+inline any_fw::Profiler::~Profiler() {
 	for (std::map<std::string, Timer*>::iterator it = timers.begin(); it != timers.end(); it++) {
 		delete it->second;
 	}
 }
 
-inline IVGFX::Timer& IVGFX::Profiler::getTimer(const std::string& name) {
+inline any_fw::Timer& any_fw::Profiler::getTimer(const std::string& name) {
 	std::map<std::string, Timer*>::iterator it = timers.find(name);
 	if (it == timers.end()) {
 		Timer* timer = new Timer();
@@ -50,13 +50,13 @@ inline IVGFX::Timer& IVGFX::Profiler::getTimer(const std::string& name) {
 	return *it->second;
 }
 
-inline void IVGFX::Profiler::reset() {
+inline void any_fw::Profiler::reset() {
 	for (std::map<std::string, Timer*>::const_iterator it = timers.begin(); it != timers.end(); it++) {
 		it->second->reset();
 	}
 }
 
-inline void IVGFX::Profiler::printStats() const {
+inline void any_fw::Profiler::printStats() const {
 	for (std::map<std::string, Timer*>::const_iterator it = timers.begin(); it != timers.end(); it++) {
 		Timer* timer = it->second;
 		std::cout << it->first << " "

@@ -12,7 +12,7 @@
 
 #ifndef FILE_HELPERS_H_
 #define FILE_HELPERS_H_
-namespace IVGFX {
+namespace any_fw {
 	inline bool fileExists(const std::string& fileName)
 	{
 		std::ifstream infile(fileName.c_str());

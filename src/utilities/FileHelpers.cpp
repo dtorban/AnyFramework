@@ -16,7 +16,7 @@
 #include <sys/stat.h>
 
 #include <vector>
-namespace IVGFX {
+namespace any_fw {
 
 	std::vector<std::string> listDirectory(
 		const std::string& path, bool directories, std::string extension) {

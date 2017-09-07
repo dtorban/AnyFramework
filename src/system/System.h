@@ -17,7 +17,7 @@
 	#include <sys/time.h>
 #endif
 
-namespace IVGFX {
+namespace any_fw {
 
 class System {
 public:
@@ -44,7 +44,7 @@ private:
 #endif
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 
 

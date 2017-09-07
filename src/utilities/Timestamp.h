@@ -11,7 +11,7 @@
 #include <map>
 #include <climits>
 
-namespace IVGFX {
+namespace any_fw {
   typedef  unsigned long long Timestamp;
 
   const Timestamp TIMESTAMP_MAX = ULLONG_MAX;
@@ -50,7 +50,7 @@ namespace IVGFX {
   };
 
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 
 

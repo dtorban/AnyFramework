@@ -11,7 +11,7 @@
 
 #include "object/Object.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class GLFWInterface : public Object {
 public:
@@ -19,6 +19,6 @@ public:
 	virtual ~GLFWInterface();
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 #endif /* GLFWINTERFACE_H_ */

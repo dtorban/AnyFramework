@@ -8,7 +8,7 @@
 
 #include <GLFWWindow.h>
 
-namespace IVGFX {
+namespace any_fw {
 
 class GLFWWindowMethod : public Object::Method {
 protected:
@@ -108,4 +108,4 @@ void GLFWWindow::release() {
 	glfwMakeContextCurrent(NULL);
 }
 
-} /* namespace IVGFX */
+} /* namespace any_fw */

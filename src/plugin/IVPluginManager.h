@@ -15,7 +15,7 @@
 #include <vector>
 #include "factory/AnyItemFactory.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class IVPluginManager {
 public:
@@ -42,10 +42,10 @@ private:
 	CompositeAnyItemFactory factory;
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 template<typename T>
-inline void IVGFX::IVPluginManager::addAPI(T* api) {
+inline void any_fw::IVPluginManager::addAPI(T* api) {
 	manager.addInterface(api);
 }
 

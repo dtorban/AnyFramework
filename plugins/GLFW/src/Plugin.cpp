@@ -27,8 +27,8 @@ extern "C"
 		       //return NULL;
 		}*/
 
-		IVGFX::IVPlugin* plugin = new IVGFX::IVPlugin();
-		plugin->addFactory(new IVGFX::SimpleItemFactory<IVGFX::GLFWInterface*>("GLFWInterface"));
+		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
+		plugin->addFactory(new any_fw::SimpleItemFactory<any_fw::GLFWInterface*>("GLFWInterface"));
 		return plugin;
 	}
 }

@@ -11,7 +11,7 @@
 
 #include "AnyItem/AnyItem.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class AnyItemFactory {
 public:
@@ -62,6 +62,6 @@ private:
 	std::string type;
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 #endif /* ANYITEMFACTORY_H_ */

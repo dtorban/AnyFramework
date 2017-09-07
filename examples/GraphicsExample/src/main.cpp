@@ -5,7 +5,7 @@
 #include "object/Object.h"
 
 using namespace any;
-using namespace IVGFX;
+using namespace any_fw;
 
 void initContext(Object& window, Object& gl);
 void renderOnWindow(Object& window, Object& gl);

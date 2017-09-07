@@ -11,7 +11,7 @@
 
 #include "object/Object.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 class OpenGLInterface : public Object {
 public:
@@ -22,6 +22,6 @@ public:
 	void addMethod(Object::Method* method);
 };
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 
 #endif /* OPENGLINTERFACE_H_ */

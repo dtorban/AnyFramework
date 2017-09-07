@@ -16,7 +16,7 @@
 #include <fstream>
 #include "utilities/FileHelpers.h"
 
-namespace IVGFX {
+namespace any_fw {
 
 IVPluginManager::IVPluginManager() : factory(factories) {
 	addAPI(&factories);
@@ -110,5 +110,5 @@ void IVPluginManager::loadRelativePlugins(const std::string& executablePath, con
 	loadPlugins(getBinDirectory(executablePath) + relativePluginPath);
 }
 
-} /* namespace IVGFX */
+} /* namespace any_fw */
 

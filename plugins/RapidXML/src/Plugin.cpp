@@ -12,7 +12,7 @@
 
 using namespace rapidxml;
 
-class XMLFactory : public IVGFX::AnyItemFactory {
+class XMLFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 
@@ -84,7 +84,7 @@ public:
 extern "C"
 {
 	PLUGIN_API PluginFW::Plugin* loadFWPlugin() {
-		IVGFX::IVPlugin* plugin = new IVGFX::IVPlugin();
+		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
 		plugin->addFactory(new XMLFactory());
 		return plugin;
 	}

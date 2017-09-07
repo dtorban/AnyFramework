@@ -12,7 +12,7 @@
 
 using namespace rapidjson;
 
-class JSONFactory : public IVGFX::AnyItemFactory {
+class JSONFactory : public any_fw::AnyItemFactory {
 public:
 	any::AnyItem create(const any::AnyItem& query) const {
 
@@ -70,7 +70,7 @@ public:
 extern "C"
 {
 	PLUGIN_API PluginFW::Plugin* loadFWPlugin() {
-		IVGFX::IVPlugin* plugin = new IVGFX::IVPlugin();
+		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
 		plugin->addFactory(new JSONFactory());
 		return plugin;
 	}
