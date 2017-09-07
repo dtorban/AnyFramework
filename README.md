@@ -7,8 +7,8 @@ AnyFramework is a light weight plugin framework.
 #### Download Repository
 
   ```
-  git clone http://github.umn.edu/ivlab/Spatialize
-  cd Spatialize
+  git clone http://github.com/dtorban/AnyFramework
+  cd AnyFramework
   ```
   
 #### Configure and build
