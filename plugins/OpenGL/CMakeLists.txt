@@ -7,7 +7,8 @@ project(OpenGL)
 set (SOURCEFILES 
 	src/Plugin.cpp
 	src/OpenGLInterface.cpp
-    ${dependency_dir}/GLEW/src/src/glew.c
+	src/glew.cpp  
+#  ${dependency_dir}/GLEW/src/src
 )
 
 set (HEADERFILES
@@ -21,6 +22,7 @@ set (HEADERFILES
 include_directories (
   src
   ${dependency_dir}/GLEW/src/include
+  ${dependency_dir}/GLEW/src/src
 )
 
 #------------------------------------------
