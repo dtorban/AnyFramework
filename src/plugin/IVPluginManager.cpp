@@ -62,7 +62,7 @@ void IVPluginManager::loadLibraries(const std::string& pluginDir) {
 	std::string ext = ".so";
 #endif
 
-#ifdef SpatializeProject_DEBUG
+#ifdef AnyFrameworkProject_DEBUG
 	int debugIndex = 0;
 #else
 	int debugIndex = 1;

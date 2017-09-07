@@ -1,4 +1,4 @@
-project (Spatialize)
+project (AnyFramework)
 
 # -------------------------------- Project -------------------------------------
 

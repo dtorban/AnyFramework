@@ -20,7 +20,7 @@ source_group("Header Files" FILES ${${PROJECT_NAME}_h})
 source_group("Source Files" FILES ${${PROJECT_NAME}_cpp})
 
 add_executable (${PROJECT_NAME} ${${PROJECT_NAME}_source_files})
-add_dependencies(${PROJECT_NAME} AnyItem PluginFW Spatialize)
+add_dependencies(${PROJECT_NAME} AnyItem PluginFW AnyFramework)
 
 target_link_libraries(${PROJECT_NAME} ${ALL_LIBS})
 

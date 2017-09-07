@@ -76,7 +76,7 @@ SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${project_dirname}/lib")
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_library ( ${PROJECT_NAME} SHARED ${HEADERFILES} ${SOURCEFILES} )
-add_dependencies(${PROJECT_NAME} AnyItem PluginFW Spatialize ${PROJECT_DEPS})
+add_dependencies(${PROJECT_NAME} AnyItem PluginFW AnyFramework ${PROJECT_DEPS})
 target_link_libraries(${PROJECT_NAME} ${ALL_LIBS})
 
 #------------------------------------------

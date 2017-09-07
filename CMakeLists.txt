@@ -1,4 +1,4 @@
-project(SpatializeProject)
+project(AnyFrameworkProject)
 
 # CMakeLists files in this project can refer to the root source directory of the 
 # project as ${project_src_dir}
@@ -115,7 +115,7 @@ add_definitions(-DGLM_FORCE_INLINE)
 add_subdirectory(third-party)
 add_subdirectory(src)
 
-set(ALL_LIBS Spatialize ${ALL_LIBS})
+set(ALL_LIBS AnyFramework ${ALL_LIBS})
 
 add_subdirectory(examples)
 add_subdirectory(plugins)
