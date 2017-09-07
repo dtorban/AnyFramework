@@ -1,6 +1,6 @@
-# Spatialize
+# AnyFramework
 
-Spatialize is a light weight plugin framework for Interactive Visualization.
+AnyFramework is a light weight plugin framework.
 
 ## Getting Started
 
@@ -40,11 +40,13 @@ Spatialize is a light weight plugin framework for Interactive Visualization.
     # Open project in Visual Studio and build
     ```
 
-#### Run Example
+#### Run Examples
 
-* Simple plugin loading example
+* Simple plugin loading examples
 
 ```
 cd build
-bin/LoadPlugin plugins Spatialize_ExamplePlugin
+bin/FactoryExample
+bin/ParseExample
+bin/GraphicsExample
 ```
