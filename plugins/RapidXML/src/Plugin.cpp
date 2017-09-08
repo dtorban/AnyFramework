@@ -12,25 +12,24 @@
 
 using namespace rapidxml;
 
-class XMLFactory : public any_fw::AnyItemFactory {
+class XMLFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
-
-		if (query["Type"].asType<std::string>() == "XML") {
-			xml_document<> doc;    // character type defaults to char
-			std::string instr = query["Text"].val<std::string>().c_str();
-			std::vector<char> buffer = std::vector<char>(instr.begin(), instr.end());
-			buffer.push_back('\0');
-			doc.parse<0>(&buffer[0]); // 0 means default parse flags
-
-			any::AnyItem xml;
-			processNode(&doc, xml);
-
-			return xml;
-		}
-
-		return any::AnyItem::blank();
+	XMLFactory() : any_fw::AnyItemTypeFactory("XML") {
+		parameters["Text"] = std::string("");
 	}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		xml_document<> doc;    // character type defaults to char
+		std::string instr = query["Text"].val<std::string>().c_str();
+		std::vector<char> buffer = std::vector<char>(instr.begin(), instr.end());
+		buffer.push_back('\0');
+		doc.parse<0>(&buffer[0]); // 0 means default parse flags
+
+		any::AnyItem xml;
+		processNode(&doc, xml);
+
+		return xml;
+	}
+
 
 	void processNode(xml_node<>* node, any::AnyItem& item) const {
 		if (node->type() == node_element || node->type() == node_document) {

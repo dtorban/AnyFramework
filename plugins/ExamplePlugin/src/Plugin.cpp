@@ -13,64 +13,58 @@
 using namespace any;
 using namespace any_fw;
 
-class WidgetFactory : public any_fw::AnyItemFactory {
+class WidgetFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
-		if (query["Type"].asType<std::string>() == "Widget") {
-			any::AnyItem widget;
-			widget["name"] = std::string("Widget");
-			widget["components"].push(std::string("comp1"));
-			widget["components"].push(3.14);
-			widget["components"].push(any::AnyItem());
-			widget["components"][2]["subComponet"] = 52;
-			widget["ptr"] = new int(23);
-			return widget;
-		}
-
-		return any::AnyItem::blank();
+	WidgetFactory() : any_fw::AnyItemTypeFactory("Widget") {}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		any::AnyItem widget;
+		widget["name"] = std::string("Widget");
+		widget["components"].push(std::string("comp1"));
+		widget["components"].push(3.14);
+		widget["components"].push(any::AnyItem());
+		widget["components"][2]["subComponet"] = 52;
+		widget["ptr"] = new int(23);
+		return widget;
 	}
 };
 
-class GizmoFactory : public any_fw::AnyItemFactory {
+class GizmoFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
-		if (query["Type"].asType<std::string>() == "Gizmo") {
-			return any::ValueItem<double>(5.5);
-		}
-
-		return any::AnyItem::blank();
+	GizmoFactory() : any_fw::AnyItemTypeFactory("Gizmo") {}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		return any::ValueItem<double>(5.5);
 	}
 };
 
-class ThingFactory : public any_fw::AnyItemFactory {
+class ThingFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
-		if (query["Type"].asType<std::string>() == "Thing") {
-			any::AnyItem thing;
-			thing.toArray();
-			thing[10] = std::string("Item 10");
-			thing[5]["name"] = std::string("five");
-			thing[5]["value"] = 5;
-			thing[5]["ptr"] = new int(5);
-			thing[5]["array"].push(1).push(2).push(3).push(4).push(5);
-			thing[0] = query["Value"].asType<double>()+0.1;
+	ThingFactory() : any_fw::AnyItemTypeFactory("Thing") {
+		parameters["Value"] = (double)0.0;
+		parameters["Factory"] = static_cast<const AnyItemFactory*>(NULL);
+	}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		any::AnyItem thing;
+		thing.toArray();
+		thing[10] = std::string("Item 10");
+		thing[5]["name"] = std::string("five");
+		thing[5]["value"] = 5;
+		thing[5]["ptr"] = new int(5);
+		thing[5]["array"].push(1).push(2).push(3).push(4).push(5);
+		thing[0] = query["Value"].asType<double>()+0.1;
 
-			if (!query["Factory"].isBlank()) {
-				any::AnyItem subQuery;
-				subQuery["Type"] = std::string("Widget");
-				const AnyItemFactory* factory = query["Factory"].ptr<const AnyItemFactory*>();
-				//thing[11]["test"] = item;
-				any::AnyItem item = factory->create(subQuery);
-				thing[1]["Widget"].set(item);
-				subQuery["Type"] = std::string("Gizmo");
-				item.set(factory->create(subQuery));
-				thing[2]["Gizmo"].set(item);
-			}
-
-			return thing;
+		if (!query["Factory"].isBlank()) {
+			any::AnyItem subQuery;
+			subQuery["Type"] = std::string("Widget");
+			const AnyItemFactory* factory = query["Factory"].ptr<const AnyItemFactory*>();
+			//thing[11]["test"] = item;
+			any::AnyItem item = factory->create(subQuery);
+			thing[1]["Widget"].set(item);
+			subQuery["Type"] = std::string("Gizmo");
+			item.set(factory->create(subQuery));
+			thing[2]["Gizmo"].set(item);
 		}
 
-		return any::AnyItem::blank();
+		return thing;
 	}
 };
 
@@ -101,15 +95,11 @@ public:
 	}
 };
 
-class TestObjectFactory : public any_fw::AnyItemFactory {
+class TestObjectFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
-		if (query["Type"].asType<std::string>() == "TestObject") {
-			AnyItem item = ValueItem<Object*>(new TestObject());
-			return item;
-		}
-
-		return any::AnyItem::blank();
+	TestObjectFactory() : any_fw::AnyItemTypeFactory("TestObject") {}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		return ValueItem<Object*>(new TestObject());
 	}
 };
 

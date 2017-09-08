@@ -12,23 +12,21 @@
 
 using namespace rapidjson;
 
-class JSONFactory : public any_fw::AnyItemFactory {
+class JSONFactory : public any_fw::AnyItemTypeFactory {
 public:
-	any::AnyItem create(const any::AnyItem& query) const {
+	JSONFactory() : any_fw::AnyItemTypeFactory("JSON") {
+		parameters["Text"] = std::string("");
+	}
+	any::AnyItem createItem(const any::AnyItem& query) const {
+		Document document;
+		document.Parse(query["Text"].val<std::string>().c_str());
 
-		if (query["Type"].asType<std::string>() == "JSON") {
-			Document document;
-			document.Parse(query["Text"].val<std::string>().c_str());
+		any::AnyItem json;
+		const Value& val = document;
 
-			any::AnyItem json;
-			const Value& val = document;
+		processItem(val, json);
 
-			processItem(val, json);
-
-			return json;
-		}
-
-		return any::AnyItem::blank();
+		return json;
 	}
 
 	void processItem(const Value& val, any::AnyItem& item) const {
@@ -48,7 +46,7 @@ public:
 			item = std::string("false");
 		}
 		else if (val.IsString()) {
-			item = val.GetString();
+			item = std::string(val.GetString());
 		}
 	}
 
