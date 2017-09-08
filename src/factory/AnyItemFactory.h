@@ -28,8 +28,16 @@ private:
 
 class CompositeAnyItemFactory : public AnyItemFactory {
 public:
-	CompositeAnyItemFactory(std::vector<AnyItemFactory*>& factories) : AnyItemFactory(""), factories(factories) {}
-	virtual ~CompositeAnyItemFactory() {}
+	CompositeAnyItemFactory() : AnyItemFactory("") {}
+	virtual ~CompositeAnyItemFactory() {
+		for (int f = 0; f < factories.size(); f++) {
+			delete factories[f];
+		}
+	}
+
+	void addFactory(AnyItemFactory* factory) {
+		factories.push_back(factory);
+	}
 
 	any::AnyItem create(const any::AnyItem& params) const {
 		for (int f = 0; f < factories.size(); f++) {
@@ -43,7 +51,7 @@ public:
 	}
 
 private:
-	std::vector<AnyItemFactory*>& factories;
+	std::vector<AnyItemFactory*> factories;
 };
 
 class AnyItemTypeFactory : public AnyItemFactory {

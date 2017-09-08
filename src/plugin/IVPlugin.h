@@ -11,7 +11,7 @@
 
 #include "Plugin.h"
 #include "PluginVersion.h"
-#include "factory/AnyItemFactory.h"
+#include "plugin/FactoryAPI.h"
 
 namespace any_fw {
 
@@ -32,17 +32,17 @@ private:
 	PluginFW::PluginInfo info;
 };
 
-class AnyFactoryPlugin : public PluginFW::TypedPlugin<std::vector<AnyItemFactory*> > {
+class AnyFactoryPlugin : public PluginFW::TypedPlugin<FactoryAPI > {
 public:
 	AnyFactoryPlugin(std::vector<AnyItemFactory*>& factories) : factories(factories) {}
 	virtual ~AnyFactoryPlugin() {}
 
-	void registerPlugin(std::vector<AnyItemFactory*>& api, PluginFW::PluginAPIInfo& apiInfo) {
+	void registerPlugin(FactoryAPI& api, PluginFW::PluginAPIInfo& apiInfo) {
 		for (int f = 0; f < factories.size(); f++) {
-			api.push_back(factories[f]);
+			api.addFactory(factories[f]);
 		}
 	}
-	void unregisterPlugin(std::vector<AnyItemFactory*>& api, PluginFW::PluginAPIInfo& apiInfo) {}
+	void unregisterPlugin(FactoryAPI& api, PluginFW::PluginAPIInfo& apiInfo) {}
 
 private:
 	std::vector<AnyItemFactory*>& factories;

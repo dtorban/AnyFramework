@@ -14,10 +14,11 @@
 #include <set>
 #include <vector>
 #include "factory/AnyItemFactory.h"
+#include "FactoryAPI.h"
 
 namespace any_fw {
 
-class IVPluginManager {
+class IVPluginManager : public FactoryAPI {
 public:
 	IVPluginManager();
 	virtual ~IVPluginManager();
@@ -30,7 +31,7 @@ public:
 	void loadPlugins(const std::string& pluginPath);
 
 	const AnyItemFactory& getFactory() { return factory; }
-
+	void addFactory(AnyItemFactory* factory);
 
 private:
 	void loadLibraries(const std::string& pluginDir);
@@ -38,7 +39,6 @@ private:
 
 	PluginFW::PluginManager manager;
 	std::set<std::string> loadedPlugins;
-	std::vector<AnyItemFactory*> factories;
 	CompositeAnyItemFactory factory;
 };
 

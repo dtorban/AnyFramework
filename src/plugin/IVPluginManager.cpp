@@ -18,14 +18,11 @@
 
 namespace any_fw {
 
-IVPluginManager::IVPluginManager() : factory(factories) {
-	addAPI(&factories);
+IVPluginManager::IVPluginManager() {
+	addAPI(static_cast<FactoryAPI*>(this));
 }
 
 IVPluginManager::~IVPluginManager() {
-	for (int f = 0; f < factories.size(); f++) {
-		delete factories[f];
-	}
 }
 
 void IVPluginManager::loadInstalledPlugins() {
@@ -99,6 +96,9 @@ void IVPluginManager::loadLibraries(const std::string& pluginDir) {
 
 }
 
+void IVPluginManager::addFactory(AnyItemFactory* factory) {
+	this->factory.addFactory(factory);
+}
 
 std::string IVPluginManager::getBinDirectory(const std::string& executable) const {
 	std::size_t found = executable.find_last_of("/\\");
