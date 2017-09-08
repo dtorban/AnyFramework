@@ -14,17 +14,14 @@ int main(int argc, char**argv) {
 
 	std::cout << pm.getFactory() << std::endl;
 
-	AnyItem query;
-	query["Type"] = std::string("Widget");
-	AnyItem widget = pm.getFactory().create(query);
-	query["Type"] = std::string("Gizmo");
-	AnyItem gizmo = pm.getFactory().create(query);
-	query["Type"] = std::string("Thing");
-	query["Value"] = 757;
-	AnyItem thing1 = pm.getFactory().create(query);
-	query["Value"] = std::string("600");
-	query["Factory"] = (const AnyItemFactory*)&(pm.getFactory());
-	AnyItem thing2 = pm.getFactory().create(query);
+	AnyItem params;
+	AnyItem widget = pm.getFactory().createType("Widget");
+	AnyItem gizmo = pm.getFactory().createType("Gizmo");
+	params["Value"] = 757;
+	AnyItem thing1 = pm.getFactory().createType("Thing", params);
+	params["Value"] = std::string("600");
+	params["Factory"] = (const AnyItemFactory*)&(pm.getFactory());
+	AnyItem thing2 = pm.getFactory().createType("Thing", params);
 
 	std::cout << "\n* Widget:\n\t" << widget << std::endl;
 	std::cout << "\n* Gizmo:\n\t" << gizmo << std::endl;
@@ -38,12 +35,10 @@ int main(int argc, char**argv) {
 
 	std::cout << std::endl;
 
-	AnyItem objectQuery;
-	objectQuery["Type"] = std::string("TestObject");
-	Object& obj = *pm.getFactory().create(objectQuery).ptr<Object*>();
+	Object& obj = *pm.getFactory().createType("TestObject").ptr<Object*>();
 
 	std::cout << obj << std::endl;
-	AnyItem params = obj.Methods["clear"].getParameters();
+	params.set(obj.Methods["clear"].getParameters());
 	std::cout << params << std::endl;
 	obj.Methods["clear"](params);
 	delete &obj;

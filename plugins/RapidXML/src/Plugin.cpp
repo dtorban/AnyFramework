@@ -14,7 +14,7 @@ using namespace rapidxml;
 
 class XMLFactory : public any_fw::AnyItemTypeFactory {
 public:
-	XMLFactory() : any_fw::AnyItemTypeFactory("XML") {
+	XMLFactory() : any_fw::AnyItemTypeFactory("ParsedXML") {
 		parameters["Text"] = std::string("");
 	}
 	any::AnyItem createItem(const any::AnyItem& query) const {

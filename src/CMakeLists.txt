@@ -10,6 +10,7 @@ set (${PROJECT_NAME}_cpp
   plugin/IVPluginManager.cpp
   utilities/FileHelpers.cpp
   system/System.cpp
+  factory/TypeGroupFactory.cpp
 
 )
 set (${PROJECT_NAME}_h

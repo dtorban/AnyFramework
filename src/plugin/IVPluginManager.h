@@ -13,7 +13,7 @@
 #include <string>
 #include <set>
 #include <vector>
-#include "factory/AnyItemFactory.h"
+#include "factory/TypeGroupFactory.h"
 #include "FactoryAPI.h"
 
 namespace any_fw {
@@ -30,7 +30,7 @@ public:
 	void loadRelativePlugins(const std::string& executablePath, const std::string& relativePluginPath = "/../plugins");
 	void loadPlugins(const std::string& pluginPath);
 
-	const AnyItemFactory& getFactory() { return factory; }
+	const TypeGroupFactory& getFactory() { return factory; }
 	void addFactory(AnyItemFactory* factory);
 
 private:
@@ -39,7 +39,7 @@ private:
 
 	PluginFW::PluginManager manager;
 	std::set<std::string> loadedPlugins;
-	CompositeAnyItemFactory factory;
+	TypeGroupFactory factory;
 };
 
 } /* namespace any_fw */

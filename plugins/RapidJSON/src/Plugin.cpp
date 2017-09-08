@@ -14,7 +14,7 @@ using namespace rapidjson;
 
 class JSONFactory : public any_fw::AnyItemTypeFactory {
 public:
-	JSONFactory() : any_fw::AnyItemTypeFactory("JSON") {
+	JSONFactory() : any_fw::AnyItemTypeFactory("ParsedJSON") {
 		parameters["Text"] = std::string("");
 	}
 	any::AnyItem createItem(const any::AnyItem& query) const {

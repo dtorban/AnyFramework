@@ -10,6 +10,7 @@
 #define ANYITEMFACTORY_H_
 
 #include "AnyItem/AnyItem.h"
+#include <map>
 
 namespace any_fw {
 
@@ -46,7 +47,7 @@ public:
 		}
 	}
 
-	void addFactory(AnyItemFactory* factory) {
+	virtual void addFactory(AnyItemFactory* factory) {
 		factories.push_back(factory);
 	}
 
@@ -71,6 +72,65 @@ private:
 	std::vector<AnyItemFactory*> factories;
 };
 
+class GroupedAnyItemFactory : public AnyItemFactory {
+public:
+	GroupedAnyItemFactory() : AnyItemFactory("") {}
+	virtual ~GroupedAnyItemFactory() {
+		for (std::map<std::string, CompositeAnyItemFactory*>::iterator it = factories.begin(); it != factories.end(); it++) {
+			delete it->second;
+		}
+	}
+
+	void addFactory(const std::string& key, AnyItemFactory* factory) {
+		std::map<std::string, CompositeAnyItemFactory*>::iterator it = factories.find(key);
+		CompositeAnyItemFactory* cfactory = NULL;
+		if (it != factories.end()) {
+			cfactory = it->second;
+		}
+		else {
+			cfactory = new CompositeAnyItemFactory();
+			factories[key] = cfactory;
+		}
+
+		cfactory->addFactory(factory);
+	}
+
+	AnyItemFactory* getFactory(const std::string& key) const {
+		return factories.find(key)->second;
+	}
+
+	virtual std::string getKey(const any::AnyItem& params) const = 0;
+
+	any::AnyItem create(const any::AnyItem& params) const {
+		std::string key = getKey(params);
+		if (factories.find(key) != factories.end()) {
+			return getFactory(key)->create(params);
+		}
+
+		return any::AnyItem::blank();
+	}
+
+	void write(std::ostream& out) const {
+		for (std::map<std::string, CompositeAnyItemFactory*>::const_iterator it = factories.begin(); it != factories.end(); it++) {
+			out << *it->second;
+		}
+	}
+
+private:
+	std::map<std::string, CompositeAnyItemFactory*> factories;
+};
+
+class GroupedAnyItemTypeFactory : public GroupedAnyItemFactory {
+public:
+	GroupedAnyItemTypeFactory(const std::string& typeKey = "Type") : typeKey(typeKey) {}
+	std::string getKey(const any::AnyItem& params) const {
+		return params[typeKey].asType<std::string>();
+	}
+
+private:
+	std::string typeKey;
+};
+
 class AnyItemTypeFactory : public AnyItemFactory {
 public:
 	AnyItemTypeFactory(const std::string& typeName) : AnyItemFactory(typeName) {
@@ -78,6 +138,7 @@ public:
 	}
 
 	any::AnyItem create(const any::AnyItem& query) const {
+
 		if (query["Type"].asType<std::string>() == getTypeName()) {
 			return createItem(query);
 		}

@@ -16,10 +16,8 @@ int main(int argc, char**argv) {
 	pm.loadInstalledPlugins();
 
 	AnyItem query;
-	query["Type"] = std::string("GLFWInterface");
-	Object& glfw = *pm.getFactory().create(query).ptr<Object*>();
-	query["Type"] = std::string("OpenGLInterface");
-	Object& gl = *pm.getFactory().create(query).ptr<Object*>();
+	Object& glfw = *pm.getFactory().createType("GLFWInterface").ptr<Object*>();
+	Object& gl = *pm.getFactory().createType("OpenGLInterface").ptr<Object*>();
 
 	std::cout << glfw << std::endl;
 	std::cout << gl << std::endl;

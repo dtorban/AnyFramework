@@ -13,9 +13,8 @@ int main(int argc, char**argv) {
 	pm.loadInstalledPlugins();
 
 	std::cout << "\nXML Parse Example:" << std::endl;
-	AnyItem query;
-	query["Type"] = std::string("XML");
-	query["Text"] = std::string(
+	AnyItem params;
+	params["Text"] = std::string(
 			"<Item1>1</Item2>"
 			"<Item2 again=\"blah\">"
 			"	<sub again=\"blah2\">This is a test</sub>"
@@ -26,12 +25,11 @@ int main(int argc, char**argv) {
 			"	</sub>"
 			"</Item2>"
 			"<Item3>1</Item3>");
-	AnyItem xml = pm.getFactory().create(query);
+	AnyItem xml = pm.getFactory().createType("ParsedXML", params);
 	std::cout << xml << std::endl;
 
 	std::cout << "\nJSON Parse Example:" << std::endl;
-	query["Type"] = std::string("JSON");
-	query["Text"] = std::string(
+	params["Text"] = std::string(
 				"{"
 				""
 				"	\"hello\": \"world\","
@@ -46,7 +44,7 @@ int main(int argc, char**argv) {
 				"		\"item\": 123"
 				"	}"
 				"}");
-	AnyItem json = pm.getFactory().create(query);
+	AnyItem json = pm.getFactory().createType("ParsedJSON", params);
 	std::cout << json << std::endl;
 
 	return 0;
