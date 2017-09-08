@@ -103,7 +103,11 @@ inline std::ostream& operator<<(std::ostream& out, const Object& obj) {
 }
 
 inline std::ostream& operator<<(std::ostream& out, const Object::Method& method) {
-	out << method.getName() << "(" << method.getParameters() << ");";
+	out << method.getName() << "(";
+	if (method.getParameters().isValue()) { out << "\""; }
+	out << method.getParameters();
+	if (method.getParameters().isValue()) { out << "\""; }
+	out << ");";
 	return out;
 }
 
