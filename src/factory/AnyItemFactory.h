@@ -20,11 +20,22 @@ public:
 	const std::string& getTypeName() const { return typeName; }
 	const any::AnyItem& getDefaultParameters() const { return parameters; }
 	virtual any::AnyItem create(const any::AnyItem& params) const = 0;
+
+	friend std::ostream& operator<<(std::ostream& out, const AnyItemFactory& factory);
+
 protected:
+	virtual void write(std::ostream& out) const {
+		out << "create(" << getDefaultParameters() << ") : " << typeName;
+	}
 	any::AnyItem parameters;
 private:
 	std::string typeName;
 };
+
+inline std::ostream& operator<<(std::ostream& out, const AnyItemFactory& factory) {
+	factory.write(out);
+	return out;
+}
 
 class CompositeAnyItemFactory : public AnyItemFactory {
 public:
@@ -48,6 +59,12 @@ public:
 		}
 
 		return any::AnyItem::blank();
+	}
+
+	void write(std::ostream& out) const {
+		for (int f = 0; f < factories.size(); f++) {
+			out << *factories[f] << std::endl;
+		}
 	}
 
 private:

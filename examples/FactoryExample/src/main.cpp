@@ -12,6 +12,8 @@ int main(int argc, char**argv) {
 	pm.loadRelativePlugins(argv[0]);
 	pm.loadInstalledPlugins();
 
+	std::cout << pm.getFactory() << std::endl;
+
 	AnyItem query;
 	query["Type"] = std::string("Widget");
 	AnyItem widget = pm.getFactory().create(query);
