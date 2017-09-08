@@ -35,10 +35,11 @@ target_link_libraries(${PROJECT_NAME} ${ALL_LIBS})
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/  DESTINATION "include" FILES_MATCHING PATTERN "*.h")
 
-install( TARGETS ${PROJECT_NAME}
+install( TARGETS ${PROJECT_NAME} EXPORT "${targets_export_name}"
          LIBRARY DESTINATION lib
          ARCHIVE DESTINATION lib
-         RUNTIME DESTINATION bin)
+         RUNTIME DESTINATION bin 
+ 		INCLUDES DESTINATION include)
 
 
 

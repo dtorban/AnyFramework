@@ -1,4 +1,8 @@
-project(AnyFrameworkProject)
+project(AnyFW)
+set(${PROJECT_NAME}_VERSION 1.0.0)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
 # CMakeLists files in this project can refer to the root source directory of the 
 # project as ${project_src_dir}
@@ -109,8 +113,48 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 add_definitions(-DGLM_FORCE_INLINE)
 
+# -------------------------------- Packaging -----------------------------------
 
-# -------------------------------- Dependencies --------------------------------
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
+
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}")
+
+# Layout. This works for all platforms:
+#   * <prefix>/lib/cmake/<PROJECT-NAME>
+#   * <prefix>/lib/
+#   * <prefix>/include/
+set(config_install_dir "${CMAKE_INSTALL_PREFIX}")
+set(include_install_dir "include")
+
+# Configuration
+set(version_config "${generated_dir}/cmake/${PROJECT_NAME}ConfigVersion.cmake")
+set(project_config "${generated_dir}/cmake/${PROJECT_NAME}Config.cmake")
+set(targets_export_name "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+# Include module with fuction 'write_basic_package_version_file'
+include(CMakePackageConfigHelpers)
+
+# Configure '<PROJECT-NAME>ConfigVersion.cmake'
+# Note: PROJECT_VERSION is used as a VERSION
+write_basic_package_version_file(
+  "${version_config}"
+  VERSION ${${PROJECT_NAME}_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+
+# Configure '<PROJECT-NAME>Config.cmake'
+# Use variables:
+#   * targets_export_name
+#   * PROJECT_NAME
+configure_package_config_file(
+    "cmake/Config.cmake.in"
+    "${project_config}"
+    INSTALL_DESTINATION "${config_install_dir}"
+)
+
+# -------------------------------- Project --------------------------------
 
 add_subdirectory(third-party)
 add_subdirectory(src)
@@ -123,3 +167,20 @@ add_subdirectory(plugins)
 # Organize folder structure for Xcode, Visual Studio, etc.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# -------------------------------- Packaging -----------------------------------
+
+# Config
+#   * <prefix>/lib/cmake/Foo/FooConfig.cmake
+#   * <prefix>/lib/cmake/Foo/FooConfigVersion.cmake
+install(
+    FILES "${project_config}" "${version_config}"
+    DESTINATION "${config_install_dir}"
+)
+
+# Config
+#   * <prefix>/lib/cmake/Foo/FooTargets.cmake
+install(
+    EXPORT "${targets_export_name}"
+   # NAMESPACE "${namespace}"
+    DESTINATION "${config_install_dir}"
+)

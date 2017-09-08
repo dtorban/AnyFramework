@@ -1,0 +1,40 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/@targets_export_name@.cmake")
+check_required_components("@PROJECT_NAME@")
+
+set(Testaa "Hello")
+get_target_property(AnyFW_INCLUDE_DIRS AnyFramework INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(AnyFW_LIBRARIES_DEBUG AnyFramework IMPORTED_LINK_INTERFACE_LIBRARIES_DEBUG)
+get_target_property(AnyFW_LIBRARIES_RELEASE AnyFramework IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE)
+get_target_property(AnyFW_LIB_DEBUG AnyFramework IMPORTED_LOCATION_DEBUG)
+get_target_property(AnyFW_LIB_RELEASE AnyFramework IMPORTED_LOCATION_RELEASE)
+
+set(install_prefix @CMAKE_INSTALL_PREFIX@)
+
+set(AnyFW_INCLUDE_DIRS
+	${install_prefix}/include
+	${install_prefix}/third-party/AnyItem/include
+	${install_prefix}/third-party/PluginFW/include
+	${install_prefix}/third-party/AnyItem/include/AnyItem
+)
+
+set(AnyFW_LIB_DIRS 
+	${install_prefix}/lib 
+	${install_prefix}/third-party/AnyItem/lib 
+	${install_prefix}/third-party/PluginFW/lib
+)
+
+set(AnyFW_LIBRARIES ${AnyFW_LIBRARIES} debug ${AnyFW_LIB_DEBUG})
+set(AnyFW_LIBRARIES ${AnyFW_LIBRARIES} optimized ${AnyFW_LIB_RELEASE})
+
+foreach(_lib ${AnyFW_LIBRARIES_DEBUG})
+	set(AnyFW_LIBRARIES ${AnyFW_LIBRARIES} debug ${_lib})
+endforeach()
+
+foreach(_lib ${AnyFW_LIBRARIES_RELEASE})
+	set(AnyFW_LIBRARIES ${AnyFW_LIBRARIES} optimized ${_lib})
+endforeach()
+
+
+
