@@ -56,6 +56,8 @@ OpenGLInterface::OpenGLInterface(const any::AnyItem& anyItem) : Object("OpenGLIn
 	glEnums["GL_DECR"] = GL_DECR;
 	glEnums["GL_DECR_WRAP"] = GL_DECR_WRAP;
 	glEnums["GL_INVERT"] = GL_INVERT;
+	glEnums["GL_VERTEX_SHADER"] = GL_VERTEX_SHADER;
+	glEnums["GL_FRAGMENT_SHADER"] = GL_VERTEX_SHADER;
 
 }
 
@@ -73,6 +75,7 @@ void OpenGLInterface::initMethods() {
 	addMethod(new OpenGLSetStencilFunction(*this));
 	addMethod(new OpenGLSetStencilMask(*this));
 	addMethod(new OpenGLSetStencilOp(*this));
+	addMethod(new OpenGLCreateShaderProgram(*this));
 }
 
 void OpenGLInterface::addMethod(Object::Method* method) {

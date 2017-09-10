@@ -7,6 +7,7 @@ project(OpenGL)
 set (SOURCEFILES 
 	src/Plugin.cpp
 	src/OpenGLInterface.cpp
+	src/OpenGLShaderProgram.cpp
 	src/glew.cpp  
 #  ${dependency_dir}/GLEW/src/src
 )

@@ -2,14 +2,9 @@
 #define OPENGLMETHODS_H_
 
 #include "object/Object.h"
+#include "OpenGLShaderProgram.h"
 
 namespace any_fw {
-
-class OpenGLMethod : public Object::Method {
-protected:
-	OpenGLMethod(OpenGLInterface& gl, const std::string& name) : Method(gl, name), gl(gl) {}
-	OpenGLInterface& gl;
-};
 
 class OpenGLSetClearColor : public OpenGLMethod {
 public:
@@ -33,6 +28,7 @@ public:
 		parameters["color"] = 1;
 		parameters["depth"] = 1;
 		parameters["stencil"] = 1;
+		parameters["accum"] = 0;
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
 		GLuint clearBuffer = 0;
@@ -44,6 +40,9 @@ public:
 		}
 		if (parameters["stencil"].val<int>()) {
 			clearBuffer = clearBuffer | GL_STENCIL_BUFFER_BIT;
+		}
+		if (parameters["accum"].val<int>()) {
+			clearBuffer = clearBuffer | GL_ACCUM_BUFFER_BIT;
 		}
 		glClear(clearBuffer);
 		return any::AnyItem::blank();
@@ -154,6 +153,17 @@ public:
 				gl.glEnums[parameters["dpfail"].val<std::string>()],
 				gl.glEnums[parameters["dppass"].val<std::string>()]);
 		return any::AnyItem::blank();
+	}
+};
+
+class OpenGLCreateShaderProgram : public OpenGLMethod {
+public:
+	OpenGLCreateShaderProgram(OpenGLInterface& gl) : OpenGLMethod(gl, "createShaderProgram") {
+		//parameters["Text"] = std::string("");
+		//parameters["shaderType"] = std::string("GL_NONE");
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		return any::ValueItem<OpenGLShaderProgram*>(new OpenGLShaderProgram(gl));
 	}
 };
 

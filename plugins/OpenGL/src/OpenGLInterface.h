@@ -26,6 +26,12 @@ public:
 	std::map<std::string, GLuint> glEnums;
 };
 
+class OpenGLMethod : public Object::Method {
+protected:
+	OpenGLMethod(OpenGLInterface& gl, const std::string& name) : Method(gl, name), gl(gl) {}
+	OpenGLInterface& gl;
+};
+
 } /* namespace any_fw */
 
 #endif /* OPENGLINTERFACE_H_ */
