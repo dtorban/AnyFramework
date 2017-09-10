@@ -53,10 +53,10 @@ public:
 class OpenGLEnable : public OpenGLMethod {
 public:
 	OpenGLEnable(OpenGLInterface& gl) : OpenGLMethod(gl, "enable") {
-		parameters.set(any::ValueItem<unsigned int>(0));
+		parameters = std::string("GL_NONE");
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glEnable(parameters.val<unsigned int>());
+		glEnable(gl.glEnums[parameters.val<std::string>()]);
 		return any::AnyItem::blank();
 	}
 };
@@ -64,28 +64,96 @@ public:
 class OpenGLDisable : public OpenGLMethod {
 public:
 	OpenGLDisable(OpenGLInterface& gl) : OpenGLMethod(gl, "disable") {
-		parameters = (unsigned int)0;
+		parameters = std::string("GL_NONE");
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glEnable(parameters.val<unsigned int>());
+		glEnable(gl.glEnums[parameters.val<std::string>()]);
 		return any::AnyItem::blank();
 	}
 };
 
-class OpenGLGetEnum : public OpenGLMethod {
+class OpenGLSetCullMode : public OpenGLMethod {
 public:
-	OpenGLGetEnum(OpenGLInterface& gl) : OpenGLMethod(gl, "getEnum") {
+	OpenGLSetCullMode(OpenGLInterface& gl) : OpenGLMethod(gl, "setCullMode") {
 		parameters = std::string("GL_NONE");
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		std::string& enumName = parameters.val<std::string>();
-		GLuint enumVal = 0;
+		glCullFace(gl.glEnums[parameters.val<std::string>()]);
+		return any::AnyItem::blank();
+	}
+};
 
-		if (enumName == "GL_CULL_FACE") {
-			enumVal = GL_CULL_FACE;
+class OpenGLSetBlendFunction : public OpenGLMethod {
+public:
+	OpenGLSetBlendFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setBlendFunction") {
+		parameters["sfactor"] = std::string("GL_NONE");
+		parameters["dfactor"] = std::string("GL_NONE");
+		parameters["buffer"].set(any::AnyItem::blank());
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		if (!parameters["buffer"].isBlank()) {
+			glBlendFunci(parameters["buffer"].val<unsigned int>(), gl.glEnums[parameters["sfactor"].val<std::string>()], gl.glEnums[parameters["dfactor"].val<std::string>()]);
+		}
+		else {
+			glBlendFunc(gl.glEnums[parameters["sfactor"].val<std::string>()], gl.glEnums[parameters["dfactor"].val<std::string>()]);
 		}
 
-		return any::ValueItem<unsigned int>(enumVal);
+		return any::AnyItem::blank();
+	}
+};
+
+class OpenGLSetDepthFunction : public OpenGLMethod {
+public:
+	OpenGLSetDepthFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setDepthFunction") {
+		parameters["func"] = std::string("GL_NONE");
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glDepthFunc(gl.glEnums[parameters["func"].val<std::string>()]);
+
+		return any::AnyItem::blank();
+	}
+};
+
+
+class OpenGLSetStencilFunction : public OpenGLMethod {
+public:
+	OpenGLSetStencilFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilFunction") {
+		parameters["func"] = std::string("GL_NONE");
+		parameters["ref"] = (int)0;
+		parameters["mask"] = (unsigned int)0;
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glStencilFunc(gl.glEnums[parameters["func"].val<std::string>()],
+				parameters["ref"].val<int>(),
+				parameters["mask"].val<unsigned int>());
+
+		return any::AnyItem::blank();
+	}
+};
+
+class OpenGLSetStencilMask : public OpenGLMethod {
+public:
+	OpenGLSetStencilMask(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilMask") {
+		parameters = (unsigned int)0;
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glStencilMask(parameters.val<unsigned int>());
+		return any::AnyItem::blank();
+	}
+};
+
+class OpenGLSetStencilOp : public OpenGLMethod {
+public:
+	OpenGLSetStencilOp(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilOp") {
+		parameters["sfail"] = std::string("GL_NONE");
+		parameters["dpfail"] = std::string("GL_NONE");
+		parameters["dppass"] = std::string("GL_NONE");
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glStencilOp(gl.glEnums[parameters["sfail"].val<std::string>()],
+				gl.glEnums[parameters["dpfail"].val<std::string>()],
+				gl.glEnums[parameters["dppass"].val<std::string>()]);
+		return any::AnyItem::blank();
 	}
 };
 

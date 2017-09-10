@@ -10,6 +10,8 @@
 #define OPENGLINTERFACE_H_
 
 #include "object/Object.h"
+#include "OpenGLHeaders.h"
+#include <map>
 
 namespace any_fw {
 
@@ -20,6 +22,8 @@ public:
 
 	void initMethods();
 	void addMethod(Object::Method* method);
+
+	std::map<std::string, GLuint> glEnums;
 };
 
 } /* namespace any_fw */
