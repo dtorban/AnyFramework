@@ -12,12 +12,6 @@
 namespace any_fw {
 
 OpenGLInterface::OpenGLInterface(const any::AnyItem& anyItem) : Object("OpenGLInterface") {
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if (GLEW_OK != err) {
-		std::cout << "Error initializing GLEW." << std::endl;
-	}
-
 	initMethods();
 
 	glEnums["GL_FRONT_AND_BACK"] = GL_FRONT_AND_BACK;
@@ -65,6 +59,7 @@ OpenGLInterface::~OpenGLInterface() {
 }
 
 void OpenGLInterface::initMethods() {
+	addMethod(new OpenGLInit(*this));
 	addMethod(new OpenGLSetClearColor(*this));
 	addMethod(new OpenGLClear(*this));
 	addMethod(new OpenGLEnable(*this));

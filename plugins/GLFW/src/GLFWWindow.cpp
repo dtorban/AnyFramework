@@ -58,6 +58,15 @@ void glfw_window_close_callback(GLFWwindow* window) {
 }
 
 GLFWWindow::GLFWWindow(const any::AnyItem& settings) : Object("GLFWWindow") {
+	int contextVersionMajor = settings["contextVersionMajor"].asType<int>();
+	int contextVersionMinor = settings["contextVersionMinor"].asType<int>();
+	if (contextVersionMajor >= 4 || (contextVersionMajor >= 3 && contextVersionMinor >= 2)) {
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, contextVersionMinor);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	}
+
 	window = glfwCreateWindow(
 			settings["Width"].asType<int>(),
 			settings["Height"].asType<int>(),

@@ -53,6 +53,22 @@ int main(int argc, char**argv) {
 
 void initContext(Object& window, Object& gl) {
 	window.Methods["makeCurrent"]();
+
+	gl.Methods["init"]();
+
+	Object& shaderProgram = *gl.Methods["createShaderProgram"]().ptr<Object*>();
+	std::cout << shaderProgram << std::endl;
+	AnyItem vsh;
+	vsh["shaderType"] = std::string("GL_VERTEX_SHADER");
+	vsh["text"] = std::string(
+				"#version 330\n"
+				"layout(location = 0) in vec3 position;\n"
+				"void main() {\n"
+				"    gl_Position = vec4(position, 1.0);\n"
+				"}\n");
+
+	shaderProgram.Methods["setShader"](vsh);
+
 	gl.Methods["setClearColor"]();
 	window.Methods["release"]();
 }

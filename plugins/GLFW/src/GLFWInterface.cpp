@@ -23,6 +23,8 @@ public:
 		parameters["Height"] = 400;
 		parameters["XPos"] = 0;
 		parameters["YPos"] = 0;
+		parameters["contextVersionMajor"] = 3;
+		parameters["contextVersionMinor"] = 3;
 		parameters["Title"] = std::string("");
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {

@@ -6,6 +6,23 @@
 
 namespace any_fw {
 
+
+class OpenGLInit : public OpenGLMethod {
+public:
+	OpenGLInit(OpenGLInterface& gl) : OpenGLMethod(gl, "init") {
+	}
+
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glewExperimental = GL_TRUE;
+		GLenum err = glewInit();
+		if (GLEW_OK != err) {
+			std::cout << "Error initializing GLEW." << std::endl;
+		}
+
+		return any::AnyItem::blank();
+	}
+};
+
 class OpenGLSetClearColor : public OpenGLMethod {
 public:
 	OpenGLSetClearColor(OpenGLInterface& gl) : OpenGLMethod(gl, "setClearColor") {

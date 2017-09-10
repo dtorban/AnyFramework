@@ -14,11 +14,12 @@ class OpenGLSetShader : public OpenGLMethod {
 public:
 	OpenGLSetShader(OpenGLInterface& gl, OpenGLShaderProgram& program) : OpenGLMethod(gl, "setShader"), program(program) {
 		parameters["shaderType"] = std::string("GL_NONE");
-		parameters["Text"] = std::string("");
+		parameters["text"] = std::string("");
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
+		std::cout << gl.glEnums[parameters["shaderType"].val<std::string>()] << " " << parameters["shaderType"].val<std::string>() << " " << parameters["text"].val<std::string>() << std::endl;
 		program.setShader(gl.glEnums[parameters["shaderType"].val<std::string>()],
-				parameters["shaderType"].val<std::string>());
+				parameters["text"].val<std::string>());
 		return any::AnyItem::blank();
 	}
 
