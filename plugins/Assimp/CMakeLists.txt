@@ -7,6 +7,7 @@ project(Assimp)
 set (SOURCEFILES 
 	src/Plugin.cpp
 	src/AssetImporter.cpp
+	src/AssimpScene.cpp
 )
 
 set (HEADERFILES

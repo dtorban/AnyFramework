@@ -11,6 +11,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "utilities/FileHelpers.h"
+#include "AssimpScene.h"
 
 namespace any_fw {
 
@@ -32,7 +33,7 @@ public:
 				return any::AnyItem::blank();
 			}
 
-			return any::ValueItem<const aiScene*>(scene);
+			return any::ValueItem<AssimpScene*>(new AssimpScene(scene));
 		}
 		else {
 			std::cout << "ERROR::ASSIMP::Path not found: " << path << std::endl;

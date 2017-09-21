@@ -26,6 +26,7 @@ int main(int argc, char**argv) {
 	std::cout << assetImporter << std::endl;
 	std::cout << asset << std::endl;
 	if (!asset.isBlank()) {
+		std::cout << *asset.ptr<Object*>() << std::endl;
 	}
 
 	return 0;
