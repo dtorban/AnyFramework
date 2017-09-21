@@ -38,7 +38,6 @@ public:
 
 	class MethodSet {
 	public:
-	public:
 		MethodSet(std::map<std::string, Method*>& methods) : methods(methods) {}
 		Method& operator[](const std::string& name) { return *methods[name]; }
 	private:
@@ -60,6 +59,7 @@ private:
 	std::set<const std::type_info*> types;
 
 protected:
+	void addMethod(Object::Method* method) {methods[method->getName()] = method;}
 	any::AnyItem properties;
 	std::map<std::string, Method*> methods;
 	template <typename T>

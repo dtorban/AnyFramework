@@ -73,8 +73,5 @@ void OpenGLInterface::initMethods() {
 	addMethod(new OpenGLCreateShaderProgram(*this));
 }
 
-void OpenGLInterface::addMethod(Object::Method* method) {
-	methods[method->getName()] = method;
-}
 
 } /* namespace any_fw */

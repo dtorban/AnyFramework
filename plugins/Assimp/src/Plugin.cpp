@@ -6,14 +6,13 @@
  * 		Dan Orban (dtorban)
  */
 #include "plugin/IVPlugin.h"
-#include <iostream>
-#include "GLFWInterface.h"
+#include "AssetImporter.h"
 
 extern "C"
 {
 	PLUGIN_API PluginFW::Plugin* loadFWPlugin() {
 		any_fw::IVPlugin* plugin = new any_fw::IVPlugin();
-		plugin->addFactory(new any_fw::SimpleItemFactory<any_fw::GLFWInterface*>("GLFWInterface"));
+		plugin->addFactory(new any_fw::SimpleItemFactory<any_fw::AssetImporter*>("AssetImporter"));
 		return plugin;
 	}
 }

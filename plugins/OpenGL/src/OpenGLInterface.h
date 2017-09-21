@@ -21,7 +21,6 @@ public:
 	virtual ~OpenGLInterface();
 
 	void initMethods();
-	void addMethod(Object::Method* method);
 
 	std::map<std::string, GLuint> glEnums;
 };
