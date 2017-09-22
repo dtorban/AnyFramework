@@ -18,7 +18,7 @@ int main(int argc, char**argv) {
 	pm.loadRelativePlugins(argv[0]);
 	pm.loadInstalledPlugins();
 
-	Object& assetImporter = *pm.getFactory().createType("AssetImporter").val<Object*>();
+	Object& assetImporter = *pm.getFactory().createType("AssetImporter").ptr<Object*>();
 	AnyItem params = assetImporter.Methods["import"].getParameters();
 	params["Path"] = std::string(argv[1]);
 	AnyItem asset = assetImporter.Methods["import"](params);
@@ -27,6 +27,8 @@ int main(int argc, char**argv) {
 	std::cout << asset << std::endl;
 	if (!asset.isBlank()) {
 		std::cout << *asset.ptr<Object*>() << std::endl;
+		float val = asset.ptr<Object*>()->getProperties()["Meshes"][0]["Vertices"].val<std::vector<float> >()[0];
+		std::cout << val << std::endl;
 	}
 
 	return 0;
