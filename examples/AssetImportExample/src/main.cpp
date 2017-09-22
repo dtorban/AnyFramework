@@ -31,6 +31,9 @@ int main(int argc, char**argv) {
 		std::cout << val << std::endl;
 	}
 
+	delete asset.ptr<Object*>();
+	delete &assetImporter;
+
 	return 0;
 }
 

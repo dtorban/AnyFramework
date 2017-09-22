@@ -18,9 +18,6 @@ class AssimpScene : public Object {
 public:
 	AssimpScene(const aiScene* scene);
 	virtual ~AssimpScene();
-
-private:
-	const aiScene* scene;
 };
 
 } /* namespace any_fw */
