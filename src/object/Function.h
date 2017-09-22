@@ -9,6 +9,9 @@
 #ifndef FUNCTION_H_
 #define FUNCTION_H_
 
+#include "AnyItem/AnyItem.h"
+#include <string>
+
 namespace any_fw {
 
 class Function {
