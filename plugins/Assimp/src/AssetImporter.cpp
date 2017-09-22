@@ -19,13 +19,21 @@ class AssimpImportMethod : public Object::Method {
 public:
 	AssimpImportMethod(Object& obj) : Method(obj, "import") {
 		parameters["Path"] = std::string("");
+		parameters["GenerateSmoothNormals"] = (bool)1;
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
 		std::string path = parameters["Path"].asType<std::string>();
 
 		if (fileExists(path)) {
 			Assimp::Importer importer;
-			const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals); // aiProcess_GenNormals);//
+			unsigned int flags = aiProcess_Triangulate | aiProcess_FlipUVs;
+			if (parameters["GenerateSmoothNormals"].val<bool>()) {
+				flags = flags | aiProcess_GenSmoothNormals;
+			}
+			else {
+				flags = flags | aiProcess_GenNormals;
+			}
+			const aiScene *scene = importer.ReadFile(path, flags);
 
 			if(!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 			{
