@@ -15,24 +15,18 @@
 #include <typeinfo>
 #include <map>
 #include <set>
+#include "Function.h"
 
 namespace any_fw {
 
 class Object {
 	friend class Method;
 public:
-	class Method {
+	class Method : public Function {
 	public:
 		virtual ~Method() {}
-		const std::string& getName() const { return name; }
-		virtual const any::AnyItem& getParameters() const { return parameters; }
-		any::AnyItem operator()() { return (*this)(parameters); }
-		virtual any::AnyItem operator()(const any::AnyItem& parameters) = 0;
-		friend std::ostream& operator<<(std::ostream& stream, const Method& item);
 	protected:
-		Method(Object& obj, const std::string& name) : name(name), obj(obj) {}
-		std::string name;
-		any::AnyItem parameters;
+		Method(Object& obj, const std::string& name) : Function(name), obj(obj) {}
 		Object& obj;
 	};
 
@@ -99,15 +93,6 @@ inline std::ostream& operator<<(std::ostream& out, const Object& obj) {
 		out << "\t" << *it->second << std::endl;
 	}
 	out << "};";
-	return out;
-}
-
-inline std::ostream& operator<<(std::ostream& out, const Object::Method& method) {
-	out << method.getName() << "(";
-	if (method.getParameters().isValue()) { out << "\""; }
-	out << method.getParameters();
-	if (method.getParameters().isValue()) { out << "\""; }
-	out << ");";
 	return out;
 }
 
