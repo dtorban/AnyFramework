@@ -8,76 +8,121 @@
 #include "plugin/IVPlugin.h"
 #include <nanogui/nanogui.h>
 
+#include <nanogui/opengl.h>
+#include <nanogui/glutil.h>
+#include <nanogui/screen.h>
+#include <nanogui/window.h>
+#include <nanogui/layout.h>
+#include <nanogui/label.h>
+#include <nanogui/checkbox.h>
+#include <nanogui/button.h>
+#include <nanogui/toolbutton.h>
+#include <nanogui/popupbutton.h>
+#include <nanogui/combobox.h>
+#include <nanogui/progressbar.h>
+#include <nanogui/entypo.h>
+#include <nanogui/messagedialog.h>
+#include <nanogui/textbox.h>
+#include <nanogui/slider.h>
+#include <nanogui/imagepanel.h>
+#include <nanogui/imageview.h>
+#include <nanogui/vscrollpanel.h>
+#include <nanogui/colorwheel.h>
+#include <nanogui/colorpicker.h>
+#include <nanogui/graph.h>
+#include <nanogui/tabwidget.h>
+#include <iostream>
+#include <string>
+
+// Includes for the GLTexture class.
+#include <cstdint>
+#include <memory>
+#include <utility>
+
+#if defined(__GNUC__)
+#  pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+#if defined(_WIN32)
+#  pragma warning(push)
+#  pragma warning(disable: 4457 4456 4005 4312)
+#endif
+
+#if defined(_WIN32)
+#  pragma warning(pop)
+#endif
+#if defined(_WIN32)
+#  if defined(APIENTRY)
+#    undef APIENTRY
+#  endif
+#  include <windows.h>
+#endif
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+using std::vector;
+using std::pair;
+using std::to_string;
+
 using namespace nanogui;
 
-enum test_enum {
-    Item1 = 0,
-    Item2,
-    Item3
-};
 
-bool bvar = true;
-int ivar = 12345678;
-double dvar = 3.1415926;
-float fvar = (float)dvar;
-std::string strval = "A string";
-test_enum enumval = Item2;
-Color colval(0.5f, 0.5f, 0.7f, 1.f);
+class ExampleApplication : public nanogui::Screen {
+public:
+	ExampleApplication() : Screen(Eigen::Vector2i(500, 500), "NanoGUI Test") {
+		Window *window = new Window(this, "Button demo");
+		window->setPosition(Vector2i(15, 15));
+		window->setLayout(new GroupLayout());
+
+		Widget *panel = new Widget(window);
+		panel->setLayout(new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 20));
+
+		/* Add a slider and set defaults */
+		Slider *slider = new Slider(panel);
+		slider->setValue(0.5f);
+		slider->setFixedWidth(80);
+
+		/* Add a textbox and set defaults */
+		TextBox *textBox = new TextBox(panel);
+		textBox->setFixedSize(Vector2i(60, 25));
+		textBox->setValue("50");
+		textBox->setUnits("%");
+
+		/* Propagate slider changes to the text box */
+		slider->setCallback([textBox](float value) {
+			textBox->setValue(std::to_string((int) (value * 100)));
+		});
+	}
+
+    virtual ~ExampleApplication() {}
+};
 
 int mainb() {
     nanogui::init();
+    try {
+        nanogui::init();
 
-    /* scoped variables */ {
-        bool use_gl_4_1 = false;// Set to true to create an OpenGL 4.1 context.
-        Screen *screen = nullptr;
-
-        if (use_gl_4_1) {
-            // NanoGUI presents many options for you to utilize at your discretion.
-            // See include/nanogui/screen.h for what all of these represent.
-            screen = new Screen(Vector2i(500, 700), "NanoGUI test [GL 4.1]",
-                                /*resizable*/true, /*fullscreen*/false, /*colorBits*/8,
-                                /*alphaBits*/8, /*depthBits*/24, /*stencilBits*/8,
-                                /*nSamples*/0, /*glMajor*/4, /*glMinor*/1);
-        } else {
-            screen = new Screen(Vector2i(500, 700), "NanoGUI test");
+        /* scoped variables */ {
+            nanogui::ref<ExampleApplication> app = new ExampleApplication();
+            app->performLayout();
+            app->setVisible(true);
+            nanogui::mainloop();
         }
 
-        bool enabled = true;
-        FormHelper *gui = new FormHelper(screen);
-        ref<Window> window = gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
-        gui->addGroup("Basic types");
-        gui->addVariable("bool", bvar);
-        gui->addVariable("string", strval);
-
-        gui->addGroup("Validating fields");
-        gui->addVariable("int", ivar)->setSpinnable(true);
-        gui->addVariable("float", fvar);
-        gui->addVariable("double", dvar)->setSpinnable(true);
-
-        gui->addGroup("Complex types");
-        gui->addVariable("Enumeration", enumval, enabled)
-           ->setItems({"Item 1", "Item 2", "Item 3"});
-        gui->addVariable("Color", colval)
-           ->setFinalCallback([](const Color &c) {
-                 std::cout << "ColorPicker Final Callback: ["
-                           << c.r() << ", "
-                           << c.g() << ", "
-                           << c.b() << ", "
-                           << c.w() << "]" << std::endl;
-             });
-
-        gui->addGroup("Other widgets");
-        gui->addButton("A button", []() { std::cout << "Button pressed." << std::endl; });
-
-        screen->setVisible(true);
-        screen->performLayout();
-        window->center();
-
-        nanogui::mainloop();
+        nanogui::shutdown();
+    } catch (const std::runtime_error &e) {
+        std::string error_msg = std::string("Caught a fatal error: ") + std::string(e.what());
+        #if defined(_WIN32)
+            MessageBoxA(nullptr, error_msg.c_str(), NULL, MB_ICONERROR | MB_OK);
+        #else
+            std::cerr << error_msg << endl;
+        #endif
+        return -1;
     }
 
-    nanogui::shutdown();
     return 0;
+
 }
 
 extern "C"
