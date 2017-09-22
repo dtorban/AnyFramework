@@ -8,20 +8,6 @@
 
 #include <AssimpScene.h>
 
-namespace any {
-
-template<typename T>
-struct value_writer<std::vector<T> > { inline static void write(std::ostream& out, const void* state) {
-	out << "[";
-	const std::vector<T>& vec = *static_cast<const std::vector<T>* >(state);
-	for (int f = 0; f < vec.size() && f < 3; f++) {
-		out << vec[f];
-		out << ",";
-	}
-	out << "...]"; }
-};
-}
-
 namespace any_fw {
 
 AssimpScene::AssimpScene(const aiScene* scene) : Object("AssimpScene") {
