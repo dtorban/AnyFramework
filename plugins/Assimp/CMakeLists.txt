@@ -49,8 +49,6 @@ set(DepName IrrXML)
 set(${DepName}_URL "http://prdownloads.sourceforge.net/irrlicht/irrxml-1.2.zip")
 set(${DepName}_HEADER_ONLY True)
 include(${CMAKE_SOURCE_DIR}/third-party/external.cmake)
-
-message(${dependency_dir}/IrrXML/src/src)
 include_directories(${dependency_dir}/IrrXML/src/src)
 
 set (SOURCEFILES 
