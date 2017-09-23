@@ -16,8 +16,6 @@ set (${PROJECT_NAME}_source_files
   ${${PROJECT_NAME}_cpp}
 )
 
-include_directories(${dependency_dir}/AssimpLib/build/install/include)
-
 source_group("Header Files" FILES ${${PROJECT_NAME}_h})
 source_group("Source Files" FILES ${${PROJECT_NAME}_cpp})
 

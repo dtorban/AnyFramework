@@ -6,6 +6,8 @@ project(NanoGUI)
 
 set (SOURCEFILES 
 	src/Plugin.cpp
+	src/NanoGUIScreen.cpp
+	src/NanoGUIInterface.cpp
 )
 
 set (HEADERFILES

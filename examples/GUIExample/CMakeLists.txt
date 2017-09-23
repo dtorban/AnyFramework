@@ -1,4 +1,4 @@
-project (AssetImportExample)
+project (GUIExample)
 
 # -------------------------------- Project -------------------------------------
 

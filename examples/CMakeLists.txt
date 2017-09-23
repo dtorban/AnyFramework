@@ -5,4 +5,5 @@ add_subdirectory(ImageLoadExample)
 add_subdirectory(FactoryExample)
 add_subdirectory(ParseExample)
 add_subdirectory(GraphicsExample)
+add_subdirectory(GUIExample)
 
