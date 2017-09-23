@@ -30,7 +30,5 @@ include_directories (
   ${dependency_dir}/RapidJSONLib/src/include
 )
 
-set(PROJECT_DEPS RapidJSONLib)
-
 # Make into plugin
 include(${CMAKE_SOURCE_DIR}/plugins/plugin.cmake)
