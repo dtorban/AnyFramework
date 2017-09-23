@@ -30,7 +30,5 @@ include_directories (
   ${dependency_dir}/RapidXMLLib/src
 )
 
-set(PROJECT_DEPS RapidXMLLib)
-
 # Make into plugin
 include(${CMAKE_SOURCE_DIR}/plugins/plugin.cmake)
