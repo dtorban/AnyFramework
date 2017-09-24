@@ -14,12 +14,16 @@
 #include <nanogui/nanogui.h>
 #include <nanogui/screen.h>
 
+#include "NanoGUIWidget.h"
+
 namespace any_fw {
 
-class NanoGUIScreen : public Object {
+class NanoGUIScreen : public NanoGUIWidget {
 public:
 	NanoGUIScreen(const any::AnyItem& parameters);
 	virtual ~NanoGUIScreen();
+
+	void update();
 
 private:
 	nanogui::Screen* screen;

@@ -48,10 +48,22 @@ public:
 	}
 };
 
+class NanoGUIShutDownMethod : public Object::Method {
+public:
+	NanoGUIShutDownMethod(Object& obj) : Method(obj, "shutdown") {
+	}
+
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		nanogui::shutdown();
+		return any::AnyItem::blank();
+	}
+};
+
 NanoGUIInterface::NanoGUIInterface(const any::AnyItem& anyItem) : Object("NanoGUIInterface") {
 	addMethod(new NanoGUICreateScreenMethod(*this));
 	addMethod(new NanoGUIInitMethod(*this));
 	addMethod(new NanoGUIMainLoopMethod(*this));
+	addMethod(new NanoGUIShutDownMethod(*this));
 }
 
 NanoGUIInterface::~NanoGUIInterface() {
