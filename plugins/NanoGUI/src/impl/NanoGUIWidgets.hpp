@@ -79,12 +79,13 @@ private:
 class NanoGUISlider : public NanoGUIWidget {
 public:
 	NanoGUISlider(nanogui::Widget* parent, const any::AnyItem& params) : NanoGUIWidget("Slider", parent, params) {
+		properties["value"] = properties["value"].asType<float>(0.5f);
 		slider = new Slider(parent);
 		setWidget(slider);
 		update();
 	}
 	void update() {
-		slider->setValue(0.5f);
+		slider->setValue(properties["value"].val<float>());
 		slider->setFixedWidth(80);
 	}
 	void setCallback(Function* callback) {
@@ -102,14 +103,16 @@ private:
 class NanoGUITextBox : public NanoGUIWidget {
 public:
 	NanoGUITextBox(nanogui::Widget* parent, const any::AnyItem& params) : NanoGUIWidget("TextBox", parent, params) {
+		properties["value"] = std::string(" ");
+		properties["units"] = std::string(" ");
 		textbox = new TextBox(parent);
 		setWidget(textbox);
 		update();
 	}
 	void update() {
 		textbox->setFixedSize(Vector2i(60, 25));
-		textbox->setValue("50");
-		textbox->setUnits("%");
+		textbox->setValue(properties["value"].asType<std::string>());
+		textbox->setUnits(properties["units"].asType<std::string>());
 	}
 
 private:
