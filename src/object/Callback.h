@@ -22,7 +22,9 @@ public:
 		exec(parameters);
 		return any::AnyItem::blank();
 	}
-	void exec(const any::AnyItem& parameters) = 0;
+
+protected:
+	virtual void exec(const any::AnyItem& parameters) = 0;
 };
 
 } /* namespace any_fw */

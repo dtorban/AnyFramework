@@ -8,6 +8,7 @@
 
 #include <NanoGUIWidget.h>
 #include "impl/NanoGUIWidgets.hpp"
+#include "object/Callback.h"
 
 namespace any_fw {
 
@@ -37,6 +38,21 @@ private:
 	NanoGUIWidget& widgetObj;
 };
 
+class NanoGUIWidgetSetCallback : public Object::Method {
+public:
+	NanoGUIWidgetSetCallback(NanoGUIWidget& widgetObj) : Method(obj, "setCallback"), widgetObj(widgetObj) {
+		parameters.set(any::ValueItem<Function*>(NULL));
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		widgetObj.setCallback(parameters.ptr<Function*>());
+		this->parameters.set(any::ValueItem<Function*>(parameters.ptr<Function*>()));
+		return any::AnyItem::blank();
+	}
+
+private:
+	NanoGUIWidget& widgetObj;
+};
+
 NanoGUIWidget::NanoGUIWidget(const std::string& name, nanogui::Widget* parent, const any::AnyItem& parameters) : Object(name), widget(NULL), parent(parent) {
 	this->properties.set(parameters);
 	std::string title = properties["title"].asType<std::string>();
@@ -47,6 +63,7 @@ NanoGUIWidget::NanoGUIWidget(const std::string& name, nanogui::Widget* parent, c
 
 	addMethod(new NanoGUIWidgetUpdate(*this));
 	addMethod(new NanoGUIWidgetCreate(*this));
+	addMethod(new NanoGUIWidgetSetCallback(*this));
 }
 
 NanoGUIWidget* NanoGUIWidget::createWidget(const std::string& type, const any::AnyItem& parameters) {

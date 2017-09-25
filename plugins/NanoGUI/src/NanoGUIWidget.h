@@ -25,6 +25,7 @@ public:
 	void setWidget(nanogui::Widget* widget) { this->widget = widget; }
 	nanogui::Widget* getWidget() { return widget; }
 	nanogui::Widget* getParent() { return parent; }
+	virtual void setCallback(Function* callback) {}
 
 private:
 	nanogui::Widget* parent;
