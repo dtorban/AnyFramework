@@ -37,9 +37,27 @@ private:
 	Object& textbox;
 };
 
-Object& createWidget(Object& parent, const std::string& type) {
+class ResetSlider : public Callback {
+public:
+	ResetSlider(Object& slider, Object& textbox) : slider(slider), textbox(textbox) {}
+	void exec(const any::AnyItem& parameters) {
+		slider.getProperties()["value"].val<float>() = 0.0f;
+		slider.Methods["update"]();
+		textbox.getProperties()["value"].val<std::string>() = "0";
+		textbox.Methods["update"]();
+	}
+
+private:
+	Object& slider;
+	Object& textbox;
+};
+
+Object& createWidget(Object& parent, const std::string& type, const std::string& title = "") {
 	AnyItem params;
 	params["type"] = std::string(type);
+	if (title.length() > 0) {
+		params["title"] = title;
+	}
 	Object& widget = parent.Methods["createWidget"](params).ref<Object>();
 	std::cout << widget << std::endl;
 	return widget;
@@ -71,6 +89,9 @@ int main(int argc, char**argv) {
 	textbox.Methods["update"]();
 	UpdateTextbox updateTextbox(textbox);
 	slider.Methods["setCallback"](any::ValueItem<Callback*>(&updateTextbox));
+	Object& resetButton = createWidget(panel, "Button", "Reset");
+	static ResetSlider resetCallback(slider, textbox);
+	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
 
 	screen.Methods["update"]();
 	gui.Methods["mainloop"]();
