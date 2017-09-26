@@ -10,13 +10,6 @@
 using namespace any;
 using namespace any_fw;
 
-class SimpleCallback : public Callback {
-public:
-	void exec(const any::AnyItem& parameters) {
-		std::cout << parameters << std::endl;
-	}
-};
-
 std::string toPercentStr(float val) {
 	int ival = ((int) (val * 100));
 	std::stringstream ss;
@@ -54,9 +47,15 @@ private:
 
 class CanvasCallback : public Callback {
 public:
+	CanvasCallback(Object& gl, Object& slider) : slider(slider), gl(gl) {}
 	void exec(const any::AnyItem& parameters) {
-		std::cout << "Canvas draw." << std::endl;
+		gl.Methods["setClearColor"].getParameters()[0].val<double>() = slider.getProperties()["value"].val<float>();
+		gl.Methods["setClearColor"]();
+		gl.Methods["clear"]();
 	}
+private:
+	Object& slider;
+	Object& gl;
 };
 
 Object& createWidget(Object& parent, const std::string& type, const std::string& title = "") {
@@ -75,19 +74,17 @@ int main(int argc, char**argv) {
 	pm.loadRelativePlugins(argv[0]);
 	pm.loadInstalledPlugins();
 
-	Object& gui = pm.getFactory().createType("NanoGUIInterface").ref<Object>();
+	Object* gui = pm.getFactory().createType("NanoGUIInterface").ptr<Object*>();
+	Object* gl = pm.getFactory().createType("OpenGLInterface").ptr<Object*>();
 
 	std::cout << gui << std::endl;
 
-	gui.Methods["init"]();
-	Object& screen = *gui.Methods["createScreen"]().ptr<Object*>();
+	gui->Methods["init"]();
+
+	Object* screen = gui->Methods["createScreen"]().ptr<Object*>();
 	std::cout << screen << std::endl;
 
-	Object& window = createWidget(screen, "Window");//screen.Methods["createWidget"](params).ref<Object>();
-	Object& button = createWidget(window, "Button");
-	static SimpleCallback callback;
-	button.Methods["setCallback"](any::ValueItem<Callback*>(&callback));
-	Object& button2 = createWidget(window, "Button");
+	Object& window = createWidget(*screen, "Window");
 	Object& panel = createWidget(window, "Panel");
 	Object& slider = createWidget(panel, "Slider");
 	Object& textbox = createWidget(panel, "TextBox");
@@ -100,15 +97,16 @@ int main(int argc, char**argv) {
 	static ResetSlider resetCallback(slider, textbox);
 	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
 	Object& canvas = createWidget(window, "GLCanvas");
-	static CanvasCallback canvasCallback;
+	static CanvasCallback canvasCallback(*gl, slider);
 	canvas.Methods["setCallback"](any::ValueItem<Callback*>(&canvasCallback));
 
-	screen.Methods["update"]();
-	gui.Methods["mainloop"]();
+	screen->Methods["update"]();
+	gui->Methods["mainloop"]();
+	gui->Methods["shutdown"]();
 
-	delete &screen;
-
-	gui.Methods["shutdown"]();
+	delete screen;
+	delete gui;
+	delete gl;
 
 	return 0;
 }

@@ -93,7 +93,9 @@ public:
 	}
 	void setCallback(Function* callback) {
 		if (callback != NULL) {
-			slider->setCallback([callback](float value) {
+			any::AnyItem* props = &properties;
+			slider->setCallback([callback, props](float value) {
+				(*props)["value"].val<float>() = value;
 				(*callback)(any::ValueItem<float>(value));
 			});
 		}
