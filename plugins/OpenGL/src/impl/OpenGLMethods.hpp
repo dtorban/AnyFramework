@@ -23,6 +23,24 @@ public:
 	}
 };
 
+class OpenGLGetEnum : public OpenGLMethod {
+public:
+	OpenGLGetEnum(OpenGLInterface& gl) : OpenGLMethod(gl, "getEnum") {
+		parameters = std::string("GL_NONE");
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		std::map<std::string, unsigned int>::iterator it = gl.glEnums.find(parameters.val<std::string>());
+		unsigned int e = GL_NONE;
+		if (it != gl.glEnums.end()) {
+			e = it->second;
+		}
+		else {
+			std::cout << "Could not find enum: " << parameters.val<std::string>() << std::endl;
+		}
+		return any::ValueItem<unsigned int>(e);
+	}
+};
+
 class OpenGLSetClearColor : public OpenGLMethod {
 public:
 	OpenGLSetClearColor(OpenGLInterface& gl) : OpenGLMethod(gl, "glClearColor") {

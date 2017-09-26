@@ -60,6 +60,7 @@ OpenGLInterface::~OpenGLInterface() {
 
 void OpenGLInterface::initMethods() {
 	addMethod(new OpenGLInit(*this));
+	addMethod(new OpenGLGetEnum(*this));
 	addMethod(new OpenGLSetClearColor(*this));
 	addMethod(new OpenGLClear(*this));
 	addMethod(new OpenGLEnable(*this));
