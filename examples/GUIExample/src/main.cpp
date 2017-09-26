@@ -86,31 +86,39 @@ int main(int argc, char**argv) {
 
 	Object* gui = pm.getFactory().createType("NanoGUIInterface").ptr<Object*>();
 	Object* gl = pm.getFactory().createType("OpenGLInterface").ptr<Object*>();
+
+	std::cout << *gui << std::endl;
+
+	// Initialize gl and gui
 	initGL(pm, *gl);
-
-	std::cout << gui << std::endl;
-
 	gui->Methods["init"]();
 
+	// Create screen
 	Object* screen = gui->Methods["createScreen"]().ptr<Object*>();
-	std::cout << screen << std::endl;
+	std::cout << *screen << std::endl;
 
+	// Create widgets
 	Object& window = createWidget(*screen, "Window");
 	Object& panel = createWidget(window, "Panel");
 	Object& slider = createWidget(panel, "Slider");
 	Object& textbox = createWidget(panel, "TextBox");
+	Object& resetButton = createWidget(panel, "Button", "Reset");
+	Object& canvas = createWidget(window, "GLCanvas");
+
+	// Initialize properties
 	textbox.getProperties()["value"].val<std::string>() = toPercentStr(slider.getProperties()["value"].val<float>());
 	textbox.getProperties()["units"].val<std::string>() = std::string("%");
 	textbox.Methods["update"]();
+
+	// Add callbacks
 	UpdateTextbox updateTextbox(textbox);
+	ResetSlider resetCallback(slider, textbox);
+	CanvasCallback canvasCallback(*gl, slider);
 	slider.Methods["setCallback"](any::ValueItem<Callback*>(&updateTextbox));
-	Object& resetButton = createWidget(panel, "Button", "Reset");
-	static ResetSlider resetCallback(slider, textbox);
 	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
-	Object& canvas = createWidget(window, "GLCanvas");
-	static CanvasCallback canvasCallback(*gl, slider);
 	canvas.Methods["setCallback"](any::ValueItem<Callback*>(&canvasCallback));
 
+	// GUI methods
 	screen->Methods["update"]();
 	gui->Methods["mainloop"]();
 	gui->Methods["shutdown"]();
