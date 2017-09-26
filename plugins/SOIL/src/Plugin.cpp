@@ -20,7 +20,7 @@ public:
 
 		width = width ? width : 1;
 		height = height ? height : 1;
-		depth = depth ? depth : 1;
+		depth = 1;
 		channels = channels ? channels : 1;
 
 		any::AnyItem image;
