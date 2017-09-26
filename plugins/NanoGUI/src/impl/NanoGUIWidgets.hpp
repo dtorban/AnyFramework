@@ -15,6 +15,9 @@
 #include <nanogui/layout.h>
 #include <nanogui/slider.h>
 #include <nanogui/textbox.h>
+#include <nanogui/glcanvas.h>
+#include <nanogui/opengl.h>
+#include <nanogui/glutil.h>
 #include "object/Function.h"
 
 using namespace nanogui;
@@ -119,6 +122,38 @@ private:
 	TextBox* textbox;
 };
 
+class NanoGUIGlCanvas : public NanoGUIWidget {
+public:
+	NanoGUIGlCanvas(nanogui::Widget* parent, const any::AnyItem& params) : NanoGUIWidget("GLCanvas", parent, params), callback(NULL) {
+		glCanvas = new GLCanvasImpl(*this, parent);
+		setWidget(glCanvas);
+		update();
+	}
+	void update() {
+	}
+	void setCallback(Function* callback) {
+		this->callback = callback;
+	}
+
+private:
+	class GLCanvasImpl : public GLCanvas {
+	public:
+		GLCanvasImpl(NanoGUIGlCanvas& canvasWidget, nanogui::Widget* parent) : GLCanvas(parent), canvasWidget(canvasWidget) {}
+		virtual void drawGL() {
+			//glClearColor(1,0,0,1);
+			//glClear(GL_COLOR_BUFFER_BIT);
+			if (canvasWidget.callback != NULL) {
+				(*canvasWidget.callback)();
+			}
+		}
+	private:
+		NanoGUIGlCanvas& canvasWidget;
+	};
+
+	GLCanvas* glCanvas;
+	Function* callback;
+};
+
 class NanoGUIWidgetFactory {
 public:
 	NanoGUIWidget* create(const std::string& type, nanogui::Widget* parent, const any::AnyItem& params) {
@@ -137,6 +172,9 @@ public:
 		}
 		else if (type == "TextBox") {
 			widget = new NanoGUITextBox(parent, params);
+		}
+		else if (type == "GLCanvas") {
+			widget = new NanoGUIGlCanvas(parent, params);
 		}
 
 		return widget;

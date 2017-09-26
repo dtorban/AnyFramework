@@ -52,6 +52,13 @@ private:
 	Object& textbox;
 };
 
+class CanvasCallback : public Callback {
+public:
+	void exec(const any::AnyItem& parameters) {
+		std::cout << "Canvas draw." << std::endl;
+	}
+};
+
 Object& createWidget(Object& parent, const std::string& type, const std::string& title = "") {
 	AnyItem params;
 	params["type"] = std::string(type);
@@ -92,6 +99,9 @@ int main(int argc, char**argv) {
 	Object& resetButton = createWidget(panel, "Button", "Reset");
 	static ResetSlider resetCallback(slider, textbox);
 	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
+	Object& canvas = createWidget(window, "GLCanvas");
+	static CanvasCallback canvasCallback;
+	canvas.Methods["setCallback"](any::ValueItem<Callback*>(&canvasCallback));
 
 	screen.Methods["update"]();
 	gui.Methods["mainloop"]();
