@@ -58,6 +58,16 @@ private:
 	Object& gl;
 };
 
+void initGL(IVPluginManager& pm, Object& gl) {
+	Object* glfw = pm.getFactory().createType("GLFWInterface").ptr<Object*>();
+	Object* window = glfw->Methods["createWindow"]().ptr<Object*>();
+	window->Methods["makeCurrent"]();
+	gl.Methods["init"]();
+	window->Methods["release"]();
+	delete window;
+	delete glfw;
+}
+
 Object& createWidget(Object& parent, const std::string& type, const std::string& title = "") {
 	AnyItem params;
 	params["type"] = std::string(type);
@@ -76,6 +86,7 @@ int main(int argc, char**argv) {
 
 	Object* gui = pm.getFactory().createType("NanoGUIInterface").ptr<Object*>();
 	Object* gl = pm.getFactory().createType("OpenGLInterface").ptr<Object*>();
+	initGL(pm, *gl);
 
 	std::cout << gui << std::endl;
 
