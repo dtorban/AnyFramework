@@ -22,7 +22,7 @@ int main(int argc, char**argv) {
 	std::cout << glfw << std::endl;
 	std::cout << gl << std::endl;
 
-	gl.Methods["setClearColor"].getParameters()[0].val<double>() = 1.0;
+	gl.Methods["glClearColor"].getParameters()[0].val<double>() = 1.0;
 
 	std::vector<Object*> windows;
 
@@ -69,12 +69,12 @@ void initContext(Object& window, Object& gl) {
 
 	shaderProgram.Methods["setShader"](vsh);
 
-	gl.Methods["setClearColor"]();
+	gl.Methods["glClearColor"]();
 	window.Methods["release"]();
 }
 
 void renderOnWindow(Object& window, Object& gl) {
 	window.Methods["makeCurrent"]();
-	gl.Methods["clear"]();
+	gl.Methods["glClear"]();
 	window.Methods["release"]();
 }

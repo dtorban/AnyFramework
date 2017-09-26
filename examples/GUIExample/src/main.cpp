@@ -49,9 +49,9 @@ class CanvasCallback : public Callback {
 public:
 	CanvasCallback(Object& gl, Object& slider) : slider(slider), gl(gl) {}
 	void exec(const any::AnyItem& parameters) {
-		gl.Methods["setClearColor"].getParameters()[0].val<double>() = slider.getProperties()["value"].val<float>();
-		gl.Methods["setClearColor"]();
-		gl.Methods["clear"]();
+		gl.Methods["glClearColor"].getParameters()[0].val<double>() = slider.getProperties()["value"].val<float>();
+		gl.Methods["glClearColor"]();
+		gl.Methods["glClear"]();
 	}
 private:
 	Object& slider;
@@ -61,7 +61,7 @@ private:
 class ScreenCallback : public Callback {
 public:
 	ScreenCallback(Object& gl) : gl(gl) {
-		clearParams.set(gl.Methods["setClearColor"].getParameters());
+		clearParams.set(gl.Methods["glClearColor"].getParameters());
 	}
 
 	void exec(const any::AnyItem& parameters) {

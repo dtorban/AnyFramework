@@ -25,7 +25,7 @@ public:
 
 class OpenGLSetClearColor : public OpenGLMethod {
 public:
-	OpenGLSetClearColor(OpenGLInterface& gl) : OpenGLMethod(gl, "setClearColor") {
+	OpenGLSetClearColor(OpenGLInterface& gl) : OpenGLMethod(gl, "glClearColor") {
 		parameters.toArray();
 		parameters[0] = (double)0.0;
 		parameters[1] = (double)0.0;
@@ -41,90 +41,82 @@ public:
 
 class OpenGLClear : public OpenGLMethod {
 public:
-	OpenGLClear(OpenGLInterface& gl) : OpenGLMethod(gl, "clear") {
-		parameters["color"] = 1;
-		parameters["depth"] = 1;
-		parameters["stencil"] = 1;
-		parameters["accum"] = 0;
+	OpenGLClear(OpenGLInterface& gl) : OpenGLMethod(gl, "glClear") {
+		parameters = (unsigned int)(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		GLuint clearBuffer = 0;
-		if (parameters["color"].val<int>()) {
-			clearBuffer = clearBuffer | GL_COLOR_BUFFER_BIT;
-		}
-		if (parameters["depth"].val<int>()) {
-			clearBuffer = clearBuffer | GL_DEPTH_BUFFER_BIT;
-		}
-		if (parameters["stencil"].val<int>()) {
-			clearBuffer = clearBuffer | GL_STENCIL_BUFFER_BIT;
-		}
-		if (parameters["accum"].val<int>()) {
-			clearBuffer = clearBuffer | GL_ACCUM_BUFFER_BIT;
-		}
-		glClear(clearBuffer);
+		glClear(parameters.val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };
 
 class OpenGLEnable : public OpenGLMethod {
 public:
-	OpenGLEnable(OpenGLInterface& gl) : OpenGLMethod(gl, "enable") {
-		parameters = std::string("GL_NONE");
+	OpenGLEnable(OpenGLInterface& gl) : OpenGLMethod(gl, "glEnable") {
+		parameters = (unsigned int)(GL_NONE);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glEnable(gl.glEnums[parameters.val<std::string>()]);
+		glEnable(parameters.val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };
 
 class OpenGLDisable : public OpenGLMethod {
 public:
-	OpenGLDisable(OpenGLInterface& gl) : OpenGLMethod(gl, "disable") {
-		parameters = std::string("GL_NONE");
+	OpenGLDisable(OpenGLInterface& gl) : OpenGLMethod(gl, "glDisable") {
+		parameters = (unsigned int)(GL_NONE);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glEnable(gl.glEnums[parameters.val<std::string>()]);
+		glDisable(parameters.val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };
 
 class OpenGLSetCullMode : public OpenGLMethod {
 public:
-	OpenGLSetCullMode(OpenGLInterface& gl) : OpenGLMethod(gl, "setCullMode") {
-		parameters = std::string("GL_NONE");
+	OpenGLSetCullMode(OpenGLInterface& gl) : OpenGLMethod(gl, "glCullFace") {
+		parameters = (unsigned int)(GL_NONE);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glCullFace(gl.glEnums[parameters.val<std::string>()]);
+		glCullFace(parameters.val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };
 
 class OpenGLSetBlendFunction : public OpenGLMethod {
 public:
-	OpenGLSetBlendFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setBlendFunction") {
-		parameters["sfactor"] = std::string("GL_NONE");
-		parameters["dfactor"] = std::string("GL_NONE");
-		parameters["buffer"].set(any::AnyItem::blank());
+	OpenGLSetBlendFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "glBlendFunc") {
+		parameters[0] = (unsigned int)(GL_NONE);
+		parameters[1] = (unsigned int)(GL_NONE);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		if (!parameters["buffer"].isBlank()) {
-			glBlendFunci(parameters["buffer"].val<unsigned int>(), gl.glEnums[parameters["sfactor"].val<std::string>()], gl.glEnums[parameters["dfactor"].val<std::string>()]);
-		}
-		else {
-			glBlendFunc(gl.glEnums[parameters["sfactor"].val<std::string>()], gl.glEnums[parameters["dfactor"].val<std::string>()]);
-		}
-
+		glBlendFunc(parameters[0].val<unsigned int>(), parameters[1].val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };
 
-class OpenGLSetDepthFunction : public OpenGLMethod {
+class OpenGLSetBlendFunctioni : public OpenGLMethod {
 public:
-	OpenGLSetDepthFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setDepthFunction") {
-		parameters["func"] = std::string("GL_NONE");
+	OpenGLSetBlendFunctioni(OpenGLInterface& gl) : OpenGLMethod(gl, "glBlendFunci") {
+		parameters.toArray();
+		parameters[0].set(any::AnyItem::blank());
+		parameters[1] = (unsigned int)(GL_NONE);
+		parameters[2] = (unsigned int)(GL_NONE);
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glDepthFunc(gl.glEnums[parameters["func"].val<std::string>()]);
+		glBlendFunci(parameters[0].val<unsigned int>(), parameters[1].val<unsigned int>(), parameters[2].val<unsigned int>());
+		return any::AnyItem::blank();
+	}
+};
+
+
+class OpenGLSetDepthFunction : public OpenGLMethod {
+public:
+	OpenGLSetDepthFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "glDepthFunc") {
+		parameters = (unsigned int)GL_NONE;
+	}
+	any::AnyItem operator()(const any::AnyItem& parameters) {
+		glDepthFunc(parameters.val<unsigned int>());
 
 		return any::AnyItem::blank();
 	}
@@ -133,15 +125,16 @@ public:
 
 class OpenGLSetStencilFunction : public OpenGLMethod {
 public:
-	OpenGLSetStencilFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilFunction") {
-		parameters["func"] = std::string("GL_NONE");
-		parameters["ref"] = (int)0;
-		parameters["mask"] = (unsigned int)0;
+	OpenGLSetStencilFunction(OpenGLInterface& gl) : OpenGLMethod(gl, "glStencilFunc") {
+		parameters.toArray();
+		parameters[0] = (unsigned int)GL_NONE;
+		parameters[1] = (int)0;
+		parameters[2] = (unsigned int)0;
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glStencilFunc(gl.glEnums[parameters["func"].val<std::string>()],
-				parameters["ref"].val<int>(),
-				parameters["mask"].val<unsigned int>());
+		glStencilFunc(parameters[0].val<unsigned int>(),
+				parameters[1].val<int>(),
+				parameters[2].val<unsigned int>());
 
 		return any::AnyItem::blank();
 	}
@@ -149,7 +142,7 @@ public:
 
 class OpenGLSetStencilMask : public OpenGLMethod {
 public:
-	OpenGLSetStencilMask(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilMask") {
+	OpenGLSetStencilMask(OpenGLInterface& gl) : OpenGLMethod(gl, "glStencilMask") {
 		parameters = (unsigned int)0;
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
@@ -160,15 +153,16 @@ public:
 
 class OpenGLSetStencilOp : public OpenGLMethod {
 public:
-	OpenGLSetStencilOp(OpenGLInterface& gl) : OpenGLMethod(gl, "setStencilOp") {
-		parameters["sfail"] = std::string("GL_NONE");
-		parameters["dpfail"] = std::string("GL_NONE");
-		parameters["dppass"] = std::string("GL_NONE");
+	OpenGLSetStencilOp(OpenGLInterface& gl) : OpenGLMethod(gl, "glStencilOp") {
+		parameters.toArray();
+		parameters[0] = (unsigned int)GL_NONE;
+		parameters[1] = (unsigned int)GL_NONE;
+		parameters[2] = (unsigned int)GL_NONE;
 	}
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glStencilOp(gl.glEnums[parameters["sfail"].val<std::string>()],
-				gl.glEnums[parameters["dpfail"].val<std::string>()],
-				gl.glEnums[parameters["dppass"].val<std::string>()]);
+		glStencilOp(parameters[0].val<unsigned int>(),
+				parameters[1].val<unsigned int>(),
+				parameters[2].val<unsigned int>());
 		return any::AnyItem::blank();
 	}
 };

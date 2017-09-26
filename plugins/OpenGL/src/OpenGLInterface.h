@@ -22,7 +22,7 @@ public:
 
 	void initMethods();
 
-	std::map<std::string, GLuint> glEnums;
+	std::map<std::string, unsigned int> glEnums;
 };
 
 class OpenGLMethod : public Object::Method {

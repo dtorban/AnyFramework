@@ -66,6 +66,7 @@ void OpenGLInterface::initMethods() {
 	addMethod(new OpenGLDisable(*this));
 	addMethod(new OpenGLSetCullMode(*this));
 	addMethod(new OpenGLSetBlendFunction(*this));
+	addMethod(new OpenGLSetBlendFunctioni(*this));
 	addMethod(new OpenGLSetDepthFunction(*this));
 	addMethod(new OpenGLSetStencilFunction(*this));
 	addMethod(new OpenGLSetStencilMask(*this));
