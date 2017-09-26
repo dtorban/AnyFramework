@@ -58,6 +58,22 @@ private:
 	Object& gl;
 };
 
+class ScreenCallback : public Callback {
+public:
+	ScreenCallback(Object& gl) : gl(gl) {
+		clearParams.set(gl.Methods["setClearColor"].getParameters());
+	}
+
+	void exec(const any::AnyItem& parameters) {
+		//clearParams[2].val<double>() = 1;
+		//gl.Methods["setClearColor"](clearParams);
+		//gl.Methods["clear"]();
+	}
+private:
+	Object& gl;
+	AnyItem clearParams;
+};
+
 void initGL(IVPluginManager& pm, Object& gl) {
 	Object* glfw = pm.getFactory().createType("GLFWInterface").ptr<Object*>();
 	Object* window = glfw->Methods["createWindow"]().ptr<Object*>();
@@ -114,6 +130,8 @@ int main(int argc, char**argv) {
 	UpdateTextbox updateTextbox(textbox);
 	ResetSlider resetCallback(slider, textbox);
 	CanvasCallback canvasCallback(*gl, slider);
+	ScreenCallback screenCallback(*gl);
+	screen->Methods["setCallback"](any::ValueItem<Callback*>(&screenCallback));
 	slider.Methods["setCallback"](any::ValueItem<Callback*>(&updateTextbox));
 	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
 	canvas.Methods["setCallback"](any::ValueItem<Callback*>(&canvasCallback));

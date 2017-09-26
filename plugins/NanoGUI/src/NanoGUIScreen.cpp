@@ -12,9 +12,10 @@ using namespace nanogui;
 
 namespace any_fw {
 
-NanoGUIScreen::NanoGUIScreen(const any::AnyItem& parameters) : NanoGUIWidget("NanoGUIScreen", NULL, parameters) {
-	screen = new Screen(Eigen::Vector2i(parameters["width"].asType<int>(), parameters["height"].asType<int>()), parameters["title"].asType<std::string>());
+NanoGUIScreen::NanoGUIScreen(const any::AnyItem& parameters) : NanoGUIWidget("NanoGUIScreen", NULL, parameters), callback(NULL) {
+	screen = new ScreenWidget(*this, parameters["width"].asType<int>(), parameters["height"].asType<int>(), parameters["title"].asType<std::string>());
 	setWidget(screen);
+	update();
 }
 
 NanoGUIScreen::~NanoGUIScreen() {
@@ -23,6 +24,7 @@ NanoGUIScreen::~NanoGUIScreen() {
 
 void NanoGUIScreen::update() {
 	screen->performLayout();
+	screen->drawAll();
 	screen->setVisible(true);
 }
 

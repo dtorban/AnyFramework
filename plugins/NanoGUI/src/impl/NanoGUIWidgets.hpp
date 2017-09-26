@@ -142,8 +142,6 @@ private:
 	public:
 		GLCanvasImpl(NanoGUIGlCanvas& canvasWidget, nanogui::Widget* parent) : GLCanvas(parent), canvasWidget(canvasWidget) {}
 		virtual void drawGL() {
-			//glClearColor(1,0,0,1);
-			//glClear(GL_COLOR_BUFFER_BIT);
 			if (canvasWidget.callback != NULL) {
 				(*canvasWidget.callback)();
 			}
