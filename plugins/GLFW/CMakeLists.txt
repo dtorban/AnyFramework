@@ -29,6 +29,7 @@ include_directories (
 set(DepName GLFWLib)
 set(${DepName}_GIT_REPOSITORY "https://github.com/glfw/glfw.git")
 set(${DepName}_LIB_NAME glfw3)
+set(${DepName}_CMAKE_ARGS -DCMAKE_DEBUG_POSTFIX=d)
 include(${CMAKE_SOURCE_DIR}/third-party/external.cmake)
 include(${CMAKE_SOURCE_DIR}/third-party/OpenGL/OpenGL.cmake)
 

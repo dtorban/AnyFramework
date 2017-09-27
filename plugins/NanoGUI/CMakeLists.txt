@@ -28,7 +28,7 @@ include_directories (
 #------------------------------------------
 
 set(DepName NanoGUILib)
-set(${DepName}_CMAKE_ARGS -DNANOGUI_BUILD_SHARED=OFF -DNANOGUI_BUILD_PYTHON=OFF -DNANOGUI_BUILD_EXAMPLE=OFF -DCMAKE_C_FLAGS=-fPIC -DCMAKE_CXX_FLAGS=-fPIC)
+set(${DepName}_CMAKE_ARGS -DNANOGUI_BUILD_SHARED=OFF -DNANOGUI_BUILD_PYTHON=OFF -DNANOGUI_BUILD_EXAMPLE=OFF -DCMAKE_C_FLAGS=-fPIC -DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_DEBUG_POSTFIX=d -DCMAKE_CONFIGURATION_TYPES="Debug Release MinSizeRel RelWithDebInfo")
 set(${DepName}_GIT_REPOSITORY "https://github.com/wjakob/nanogui.git")
 set(${DepName}_LIB_NAME nanogui)
 include(${CMAKE_SOURCE_DIR}/third-party/external.cmake)
