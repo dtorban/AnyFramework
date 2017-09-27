@@ -1,0 +1,3 @@
+[submodule "plugins/NanoGUI/nanogui"]
+	path = plugins/NanoGUI/nanogui
+	url = https://github.com/wjakob/nanogui.git
