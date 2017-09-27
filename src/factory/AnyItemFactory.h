@@ -16,7 +16,7 @@ namespace any_fw {
 
 class AnyItemFactory {
 public:
-	AnyItemFactory(const std::string& typeName) : typeName(typeName) {}
+ AnyItemFactory(const std::string& typeName) : typeName(typeName), parameters() {}
 	virtual ~AnyItemFactory() {}
 	const std::string& getTypeName() const { return typeName; }
 	const any::AnyItem& getDefaultParameters() const { return parameters; }
@@ -134,6 +134,7 @@ private:
 class AnyItemTypeFactory : public AnyItemFactory {
 public:
 	AnyItemTypeFactory(const std::string& typeName) : AnyItemFactory(typeName) {
+    std::cout << "Again" << std::endl;
 		parameters["Type"] = getTypeName();
 	}
 
@@ -159,8 +160,18 @@ public:
 	struct item_create<S*> { static S* create(const any::AnyItem& query) { return new S(query); } };
 
 	SimpleItemFactory(const std::string& typeName) : AnyItemFactory(typeName) {
-		parameters["Type"] = typeName;
-	}
+	  std::cout << "abc " << typeName<< " " << parameters << " " << std::endl;
+ 	  parameters["Type"] = (double)500;//std::string(typeName);
+ 		std::cout << "again " << parameters << std::endl;
+		parameters["Type"] = (double)200;//std::string("Hello");
+		std::cout << "again " << parameters << std::endl;
+ 		parameters["Type"] = (int)100;//std::string("Hello");
+		std::cout << "again " << parameters << std::endl;
+		any::ValueItem<std::string> p("hee");
+		std::cout << "again  " << p << std::endl;
+		parameters["Type"] = std::string("Hello");
+		std::cout << " again " << parameters << std::endl;
+	} 
 	any::AnyItem create(const any::AnyItem& query) const {
 		if (query["Type"].asType<std::string>() == getTypeName()) {
 			return any::ValueItem<T>(item_create<T>::create(query));
@@ -171,5 +182,5 @@ public:
 };
 
 } /* namespace any_fw */
-
+ 
 #endif /* ANYITEMFACTORY_H_ */
