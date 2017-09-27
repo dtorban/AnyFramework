@@ -13,11 +13,12 @@ public:
 	}
 
 	any::AnyItem operator()(const any::AnyItem& parameters) {
-		glewExperimental = GL_TRUE;
-		GLenum err = glewInit();
-		if (GLEW_OK != err) {
-			std::cout << "Error initializing GLEW." << std::endl;
-		}
+//		glewExperimental = GL_TRUE;
+//		GLenum err = glewInit();
+//		if (GLEW_OK != err) {
+//			std::cout << "Error initializing GLEW." << std::endl;
+//		}
+		initializeGLEW();
 
 		return any::AnyItem::blank();
 	}

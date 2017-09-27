@@ -27,4 +27,12 @@
 #include <GL/gl.h>
 #endif
 
+inline void initializeGLEW() {
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (GLEW_OK != err) {
+		std::cout << "Error initializing GLEW." << std::endl;
+	}
+}
+
 #endif /* OPENGLHEADERS_H_ */

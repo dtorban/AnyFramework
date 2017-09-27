@@ -28,3 +28,26 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	find_package(X11)
 	set(ALL_LIBS ${ALL_LIBS} ${CMAKE_THREAD_LIBS_INIT} rt Xrandr Xxf86vm Xinerama Xcursor Xi m dl ${X11_LIBRARIES})
 endif()
+
+include_directories (
+  ${dependency_dir}/OpenGL/include
+)
+
+# GLEW
+
+if(USE_GLEW)
+set(DepName GLEW)
+#set(${DepName}_URL "https://sourceforge.net/projects/glew/files/glew/2.1.0/glew-2.1.0.zip/download")
+set(${DepName}_URL "/home/dan/Downloads/glew-2.1.0.zip")
+set(${DepName}_HEADER_ONLY True)
+include(${CMAKE_SOURCE_DIR}/third-party/external.cmake)
+
+include_directories (
+  ${dependency_dir}/GLEW/src/include
+  ${dependency_dir}/GLEW/src/src
+)
+
+set (SOURCEFILES ${SOURCEFILES} 
+	${dependency_dir}/OpenGL/glew/glewProxy.cpp
+)
+endif()

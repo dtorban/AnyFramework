@@ -10,7 +10,7 @@
 #define OPENGLINTERFACE_H_
 
 #include "object/Object.h"
-#include "OpenGLHeaders.h"
+#include "OpenGL.h"
 #include <map>
 
 namespace any_fw {

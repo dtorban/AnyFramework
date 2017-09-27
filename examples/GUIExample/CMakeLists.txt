@@ -12,6 +12,10 @@ set (${PROJECT_NAME}_h
 
 # Library configuration
 
+set(USE_GLEW True)
+include(${CMAKE_SOURCE_DIR}/third-party/OpenGL/OpenGL.cmake)
+set(${PROJECT_NAME}_cpp ${${PROJECT_NAME}_cpp} ${SOURCEFILES})
+
 set (${PROJECT_NAME}_source_files
   ${${PROJECT_NAME}_cpp}
 )

@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include "object/Callback.h"
 #include <iostream>
+#include "OpenGL.h"
 
 using namespace any;
 using namespace any_fw;
@@ -47,38 +48,28 @@ private:
 
 class CanvasCallback : public Callback {
 public:
-	CanvasCallback(Object& gl, Object& slider) : slider(slider), gl(gl) {}
+	CanvasCallback(Object& slider) : slider(slider) {}
 	void exec(const any::AnyItem& parameters) {
-		gl.Methods["glClearColor"].getParameters()[0].val<double>() = slider.getProperties()["value"].val<float>();
-		gl.Methods["glClearColor"]();
-		gl.Methods["glClear"]();
+		glClearColor(slider.getProperties()["value"].val<float>(),0,0,1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 private:
 	Object& slider;
-	Object& gl;
 };
 
 class ScreenCallback : public Callback {
 public:
-	ScreenCallback(Object& gl) : gl(gl) {
-		clearParams.set(gl.Methods["glClearColor"].getParameters());
-	}
-
 	void exec(const any::AnyItem& parameters) {
-		//clearParams[2].val<double>() = 1;
-		//gl.Methods["setClearColor"](clearParams);
-		//gl.Methods["clear"]();
+		//glClearColor(0,0,1,1);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
-private:
-	Object& gl;
-	AnyItem clearParams;
 };
 
-void initGL(IVPluginManager& pm, Object& gl) {
+void initGL(IVPluginManager& pm) {
 	Object* glfw = pm.getFactory().createType("GLFWInterface").ptr<Object*>();
 	Object* window = glfw->Methods["createWindow"]().ptr<Object*>();
 	window->Methods["makeCurrent"]();
-	gl.Methods["init"]();
+	initializeGLEW();
 	window->Methods["release"]();
 	delete window;
 	delete glfw;
@@ -101,12 +92,10 @@ int main(int argc, char**argv) {
 	pm.loadInstalledPlugins();
 
 	Object* gui = pm.getFactory().createType("NanoGUIInterface").ptr<Object*>();
-	Object* gl = pm.getFactory().createType("OpenGLInterface").ptr<Object*>();
-
 	std::cout << *gui << std::endl;
 
 	// Initialize gl and gui
-	initGL(pm, *gl);
+	initGL(pm);
 	gui->Methods["init"]();
 
 	// Create screen
@@ -129,8 +118,8 @@ int main(int argc, char**argv) {
 	// Add callbacks
 	UpdateTextbox updateTextbox(textbox);
 	ResetSlider resetCallback(slider, textbox);
-	CanvasCallback canvasCallback(*gl, slider);
-	ScreenCallback screenCallback(*gl);
+	CanvasCallback canvasCallback(slider);
+	ScreenCallback screenCallback;
 	screen->Methods["setCallback"](any::ValueItem<Callback*>(&screenCallback));
 	slider.Methods["setCallback"](any::ValueItem<Callback*>(&updateTextbox));
 	resetButton.Methods["setCallback"](any::ValueItem<Callback*>(&resetCallback));
@@ -143,7 +132,6 @@ int main(int argc, char**argv) {
 
 	delete screen;
 	delete gui;
-	delete gl;
 
 	return 0;
 }
