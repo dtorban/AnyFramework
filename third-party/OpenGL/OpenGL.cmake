@@ -37,8 +37,8 @@ include_directories (
 
 if(USE_GLEW)
 set(DepName GLEW)
-#set(${DepName}_URL "https://sourceforge.net/projects/glew/files/glew/2.1.0/glew-2.1.0.zip/download")
-set(${DepName}_URL "/home/dan/Downloads/glew-2.1.0.zip")
+set(${DepName}_URL "https://sourceforge.net/projects/glew/files/glew/2.1.0/glew-2.1.0.zip/download")
+#set(${DepName}_URL "/home/dan/Downloads/glew-2.1.0.zip")
 set(${DepName}_HEADER_ONLY True)
 include(${CMAKE_SOURCE_DIR}/third-party/external.cmake)
 
