@@ -42,6 +42,9 @@ include_directories(
 	${dependency_dir}/${DepName}/src/ext/nanovg/src
 )
 
+ExternalProject_Get_Property(${DepName} NANOGUI_EXTRA_INCS)
+message("aaaaaaaaaaaaaaaaaaaaaa ${NANOGUI_EXTRA_INCS}")
+
 #------------------------------------------
 # Plugin
 #------------------------------------------

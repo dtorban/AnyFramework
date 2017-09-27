@@ -1,6 +1,6 @@
 # -------------------------------- Plugins --------------------------------
 
-add_subdirectory(Assimp)
+#add_subdirectory(Assimp)
 add_subdirectory(ExamplePlugin)
 add_subdirectory(RapidXML)
 add_subdirectory(RapidJSON)

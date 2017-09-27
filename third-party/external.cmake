@@ -56,6 +56,12 @@ if (NOT TARGET ${DepName})
 	endif()
 
 	if (${DepName}_URL)
+	  get_filename_component(DepFileName ${${DepName}_URL} NAME)
+	  set(DepFileName ${CMAKE_SOURCE_DIR}/third-party/repositories/${DepFileName})
+		if (EXISTS ${DepFileName})
+		  set(${DepName}_URL ${DepFileName})
+		endif()
+	  
 		if (${DepName}_HEADER_ONLY)
 			ExternalProject_add(${DepName}
 					PREFIX ${${DepName}_PREFIX}
